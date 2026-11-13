@@ -16,5 +16,7 @@ Reglas:
   vacía.
 - Las rutas se obtienen con `recon3d.paths.get_paths()`, nunca escritas a mano.
 - Cada corrida termina con `recon3d.results.write_meta(...)`.
-- Antes de hacer commit de un notebook, conviene limpiar las salidas
-  (*Editar → Borrar todas las salidas*) para que el diff sea legible.
+- Los notebooks se guardan **con las celdas ejecutadas** (salidas incluidas),
+  porque son evidencia para la evaluación. Antes de hacer commit, ejecutarlos
+  de inicio a fin (*Entorno de ejecución → Ejecutar todas*) para que las
+  salidas correspondan al código.
