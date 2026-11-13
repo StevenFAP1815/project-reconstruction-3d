@@ -14,6 +14,7 @@ from recon3d.calibration import (  # noqa: E402
     board_object_points,
     calibrate,
     detect_corners,
+    find_corners,
     focal_px_from_35mm,
     load_calibration,
     save_calibration,
@@ -100,6 +101,26 @@ def test_calibration_recovers_known_camera(tmp_path):
     assert np.allclose(k, result.camera_matrix)
     assert np.allclose(dist, result.dist_coeffs)
     assert size == IMAGE_SIZE
+
+
+def test_find_corners_on_reduced_image_maps_back_to_full_resolution(tmp_path):
+    path = _render_views(tmp_path, n_views=1, seed=3)[0]
+    small = cv2.imread(str(path), cv2.IMREAD_GRAYSCALE)
+    big = cv2.resize(small, None, fx=3, fy=3, interpolation=cv2.INTER_CUBIC)
+
+    reference, _ = find_corners(small, PATTERN, max_side=10_000)
+    corners, method = find_corners(big, PATTERN, max_side=700)
+
+    assert reference is not None and corners is not None
+    assert method in {"sb_reduced", "sb_full", "classic_reduced"}
+    # Coordenadas de píxel: el centro del píxel (0,0) se desplaza al escalar x3.
+    expected = (reference + 0.5) * 3 - 0.5
+    assert np.median(np.linalg.norm(corners - expected, axis=1)) < 1.0
+
+
+def test_detect_corners_records_method(tmp_path):
+    detections = detect_corners(_render_views(tmp_path, n_views=2), PATTERN)
+    assert len(detections.methods) == len(detections.corners)
 
 
 def test_calibrate_requires_min_views(tmp_path):

@@ -2,7 +2,8 @@
 
 Uso (desde la raíz del repositorio):
 
-    python scripts/make_data_zips.py
+    python scripts/make_data_zips.py                 # todos los zips
+    python scripts/make_data_zips.py calibration     # solo los indicados
 
 Después se sube el contenido de data/zips/ a
 `Mi unidad/project-reconstruction-3d/data/zips/` en Google Drive.
@@ -22,11 +23,16 @@ from recon3d.dataset import list_images  # noqa: E402
 from recon3d.paths import CALIBRATION, OBJECTS, get_paths  # noqa: E402
 
 
-def main() -> None:
+def main(names: list[str]) -> None:
+    valid = (*OBJECTS, CALIBRATION)
+    unknown = [name for name in names if name not in valid]
+    if unknown:
+        raise SystemExit(f"Nombres desconocidos: {unknown}. Válidos: {', '.join(valid)}")
+
     paths = get_paths()
     paths.zips.mkdir(parents=True, exist_ok=True)
 
-    for name in (*OBJECTS, CALIBRATION):
+    for name in names or valid:
         source = paths.data / name
         if not source.is_dir():
             print(f"[omitido] {name}: no existe {source}")
@@ -47,4 +53,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
