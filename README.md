@@ -20,6 +20,7 @@ captura → calibración → preprocesamiento → SfM (poses + nube dispersa)
 ```
 data/           # fotografías por objeto (no se versiona)
 src/recon3d/    # código reutilizable (paquete Python)
+tests/          # tests automatizados (pytest)
 notebooks/      # experimentos por etapa/método
 results/        # salidas por objeto y método (solo meta.json en Git)
 docs/           # informe y figuras livianas
@@ -38,6 +39,15 @@ pip install -r requirements.txt
 ```
 
 Los métodos de IA se ejecutan en Google Colab (ver `notebooks/README.md`).
+
+## Tests
+
+```powershell
+pip install -r requirements-dev.txt
+pytest
+```
+
+Los tests viven en `tests/` y usan carpetas temporales, no las fotos de `data/`.
 
 ## Objetos
 
