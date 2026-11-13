@@ -60,9 +60,40 @@ Las fotos se guardan en `data/calibration/` y se suben a Drive como
 
 | Campo | Valor |
 |---|---|
-| Fecha de las fotos | _por completar_ |
+| Fecha de las fotos | 2026-11-13, 18:12–18:15 |
 | Pantalla | Portátil, 1920 × 1080 px, aprox. 34 × 19 cm |
 | Tablero | 10 × 7 cuadros (9 × 6 esquinas internas) |
-| Ancho de 10 cuadros medido con regla (mm) | _por completar_ |
-| Tamaño de un cuadro (mm) | _por completar_ (ancho de 10 cuadros / 10) |
-| N.º de fotos tomadas | _por completar_ |
+| Tamaño de un cuadro (mm) | 22 × 22, medido con regla sobre un cuadro |
+| Cámara | Mismo teléfono (`ALT-LX3`), lente 1×, 5,25 mm, vertical (3000 × 4000) |
+| Configuración | Pro/Manual, enfoque manual (MF), 1/60 s, ISO 250 (ISO 125 en las 3 primeras) |
+| N.º de fotos tomadas | 162 |
+| N.º de fotos seleccionadas | 28, guardadas en `data/calibration/` |
+
+### Criterios de selección
+
+Las 162 fotos se revisaron visualmente y se conservaron 28. Se descartaron:
+
+- **Ráfagas:** fotos tomadas en el mismo segundo (sufijos `_1`, `_2`...), casi
+  idénticas entre sí; se conservó una por posición.
+- **Tablero incompleto:** fotos donde alguna fila o columna del tablero toca o
+  sale del borde de la imagen. El detector necesita el tablero completo.
+- **Reflejos:** fotos con un reflejo de luz sobre las esquinas del tablero
+  (serie 18:15:17–18:15:20).
+
+Las 28 seleccionadas combinan vistas frontales y oblicuas, a distintas
+distancias y con el tablero en el centro, a la izquierda y a la derecha del
+encuadre. Las 134 restantes se conservan fuera del repositorio por si hiciera
+falta ampliar la selección.
+
+### Observaciones
+
+- En parte de las fotos el navegador no estaba en pantalla completa y la barra
+  de tareas de Windows aparece justo debajo del tablero. Esto no afecta a la
+  calibración: si el tablero cambia de tamaño entre fotos, la diferencia queda
+  absorbida por la posición estimada de la cámara en cada vista, y K y la
+  distorsión no dependen del tamaño del cuadro. Si el margen blanco inferior
+  queda muy reducido, el detector puede descartar esas fotos.
+- **Limitación de cobertura:** con el móvil en vertical y la pantalla en
+  horizontal, el tablero ocupa sobre todo la franja central de la foto; los
+  extremos superior e inferior del encuadre quedan poco cubiertos. La gráfica
+  de cobertura de `01_calibration.ipynb` permite valorar este efecto.
