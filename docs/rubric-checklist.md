@@ -57,7 +57,7 @@ forma proporcional.
 | Error dimensional (%) | | | | | |
 | `results/` y `meta.json` completos | | | | | |
 
-## Estructura mínima del informe
+## Estructura mínima para posterior elaboración de informe
 
 1. Problema, aplicación y objetivos.
 2. Selección y caracterización de los 5 objetos.

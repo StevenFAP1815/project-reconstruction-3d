@@ -33,28 +33,28 @@ aplicada" la rellena el autor con lo que ajustó manualmente antes de disparar.
 
 | Ajuste | Qué controla | EXIF | Configuración aplicada |
 |---|---|---|---|
-| Modo de la app de cámara | Automático, Pro/Manual, Retrato, Noche... | — | _por completar_ |
-| ISO | Sensibilidad del sensor; más alto = más ruido | 100 (fijo) | _por completar_ |
-| Velocidad de obturación | Tiempo de exposición; más lento = riesgo de movimiento | 1/5 s (fija) | _por completar_ |
-| Compensación de exposición (EV) | Brillo general (p. ej. −0,7, 0, +1) | — | _por completar_ |
-| Balance de blancos | Tono de la luz (p. ej. 4000 K, "Fluorescente") | Manual | _por completar_ |
-| Enfoque | AF automático, AF bloqueado o MF (manual) | — | _por completar_ |
-| Estabilización / HDR / IA de escena | Procesado automático que altera la imagen | — | _por completar_ |
-| Flash | Encendido / apagado | — | _por completar_ |
+| Modo de la app de cámara | Automático, Pro/Manual, Retrato, Noche... | — | Pro/Manual |
+| ISO | Sensibilidad del sensor; más alto = más ruido | 100 (fijo) | 100 |
+| Velocidad de obturación | Tiempo de exposición; más lento = riesgo de movimiento | 1/5 s (fija) | 1/5 |
+| Compensación de exposición (EV) | Brillo general (p. ej. −0,7, 0, +1) | — | 0 |
+| Balance de blancos | Tono de la luz (p. ej. 4000 K, "Fluorescente") | Manual | - |
+| Enfoque | AF automático, AF bloqueado o MF (manual) | — | MF |
+| Estabilización / HDR / IA de escena | Procesado automático que altera la imagen | — | Sin procesamiento automático |
+| Flash | Encendido / apagado | — | apagado |
 
 ### Sesión 2: audífonos (2026-11-13, 12:57–13:03)
 
 | Ajuste | Qué controla | EXIF | Configuración aplicada |
 |---|---|---|---|
-| Modo de la app de cámara | Automático, Pro/Manual, Retrato, Noche... | — | _por completar_ |
-| ISO | Sensibilidad del sensor; más alto = más ruido | 200 (fijo) | _por completar_ |
-| Velocidad de obturación | Tiempo de exposición; más lento = riesgo de movimiento | 1/200 s (fija) | _por completar_ |
-| Compensación de exposición (EV) | Brillo general (p. ej. −0,7, 0, +1) | — | _por completar_ |
-| Balance de blancos | Tono de la luz (p. ej. 4000 K, "Fluorescente") | Manual | _por completar_ |
-| Enfoque | AF automático, AF bloqueado o MF (manual) | — | _por completar_ |
-| Estabilización / HDR / IA de escena | Procesado automático que altera la imagen | — | _por completar_ |
-| Flash | Encendido / apagado | — | _por completar_ |
-| Iluminación (si difiere de la sesión 1) | Tipo y dirección de la luz | — | _por completar_ |
+| Modo de la app de cámara | Automático, Pro/Manual, Retrato, Noche... | — | Pro/Manual |
+| ISO | Sensibilidad del sensor; más alto = más ruido | 200 (fijo) | 200 |
+| Velocidad de obturación | Tiempo de exposición; más lento = riesgo de movimiento | 1/200 s (fija) | 1/200 |
+| Compensación de exposición (EV) | Brillo general (p. ej. −0,7, 0, +1) | — | 0 |
+| Balance de blancos | Tono de la luz (p. ej. 4000 K, "Fluorescente") | Manual | - |
+| Enfoque | AF automático, AF bloqueado o MF (manual) | — | MF |
+| Estabilización / HDR / IA de escena | Procesado automático que altera la imagen | — | Sin procesamiento automático |
+| Flash | Encendido / apagado | — | apagado |
+| Iluminación (si difiere de la sesión 1) | Tipo y dirección de la luz | — | Luz calida de ambiente, dirección mas o menos perpendicaular al objeto |
 
 > **Riesgo identificado:** en la sesión 1 la obturación de 1/5 s con el
 > teléfono a pulso puede producir fotos movidas. Se verificará en el
@@ -120,8 +120,8 @@ superficie difícil, o justificar por qué no se aplicó.
 
 | Campo | Valor |
 |---|---|
-| Estrategia aplicada | _por completar_ (p. ej. el fondo negro resalta los bordes del vidrio; luz difusa para reducir reflejos) |
-| Estrategias no aplicadas y motivo | _por completar_ (p. ej. no se usó spray mate porque el experimento busca ver cómo falla cada método con vidrio real) |
+| Estrategia aplicada | Se usó fondo negro que resalta los bordes del vidrio; luz difusa para reducir reflejos |
+| Estrategias no aplicadas y motivo | No se usó ningún tipo de pintura mate, ni polvos, para evitar reflejar la luz. La razón es que no se tenía disponibilidad de ninguno de estos. |
 
 ## 7. Privacidad
 
