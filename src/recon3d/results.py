@@ -18,6 +18,7 @@ from recon3d.paths import REPO_ROOT
 TRACKED_PACKAGES = (
     "numpy",
     "opencv-python",
+    "opencv-python-headless",
     "pycolmap",
     "pycolmap-cuda12",
     "torch",

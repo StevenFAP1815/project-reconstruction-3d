@@ -9,7 +9,9 @@ espejo del repositorio: `results/` en Drive se descarga y se pega tal cual en
     │   ├── zips/<objeto>.zip   # fotos comprimidas que se suben a Drive
     │   ├── calibration/        # fotos del tablero/ChArUco
     │   └── <objeto>/           # fotos sueltas (solo en local)
-    ├── results/<objeto>/<metodo>/
+    ├── results/
+    │   ├── calibration/        # K y distorsión de la cámara
+    │   └── <objeto>/<metodo>/
     ├── work/                   # temporales (bases de datos COLMAP, etc.)
     └── checkpoints/            # pesos de modelos de IA
 
@@ -72,6 +74,11 @@ class ProjectPaths:
         return self.root / "results"
 
     @property
+    def calibration_results(self) -> Path:
+        """Resultados de la calibración (K, distorsión), comunes a todos los objetos."""
+        return self.results / CALIBRATION
+
+    @property
     def work(self) -> Path:
         return self.root / "work"
 
@@ -108,6 +115,7 @@ class ProjectPaths:
         folders = [
             self.zips,
             self.calibration,
+            self.calibration_results,
             self.work,
             self.checkpoints,
             *(self.results / name for name in OBJECTS),
