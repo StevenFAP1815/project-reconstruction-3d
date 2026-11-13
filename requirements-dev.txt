@@ -1,5 +1,9 @@
 # Dependencias del entorno local y de la CI (Python 3.13).
-# El código de src/recon3d solo usa la librería estándar de Python, así que
-# aquí basta con la herramienta de tests. Las dependencias del pipeline
-# (pycolmap, torch, ...) se instalan en Colab: ver requirements-colab.txt.
+# Las dependencias del pipeline en Colab están en requirements-colab.txt.
 pytest==8.3.3
+
+# Necesarias para los tests de calibración. Se usa la variante "headless" de
+# OpenCV (sin ventanas gráficas), adecuada para servidores como la CI.
+# En Colab no se instalan: ya vienen numpy y opencv-python.
+numpy==2.2.6
+opencv-python-headless==4.11.0.86

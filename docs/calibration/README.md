@@ -29,6 +29,9 @@ Debe ser **la misma que en la sesión 1** de captura (ver
 `docs/capture-protocol.md`):
 
 - Lente principal 1×, sin zoom, resolución 3000 × 4000.
+- **Móvil en vertical**, igual que en las fotos de los objetos. En horizontal
+  las fotos saldrían de 4000 × 3000 px y la calibración no sería aplicable;
+  `01_calibration.ipynb` lo detecta y avisa.
 - Modo Pro/Manual con el mismo enfoque manual (distancia parecida a la usada
   con los objetos, unos 30–50 cm).
 - ISO, obturación y balance de blancos pueden ajustarse para que el tablero se
