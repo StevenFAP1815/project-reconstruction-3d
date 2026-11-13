@@ -31,8 +31,16 @@ DEFAULT_PATTERN = (9, 6)
 _FULL_FRAME_DIAGONAL_MM = float(np.hypot(36.0, 24.0))
 
 # Detector "SB" (sector-based): más robusto y preciso que el clásico
-# findChessboardCorners, y ya devuelve las esquinas con precisión subpíxel.
-_SB_FLAGS = cv2.CALIB_CB_NORMALIZE_IMAGE | cv2.CALIB_CB_ACCURACY
+# findChessboardCorners. EXHAUSTIVE amplía la búsqueda (más lento, más fiable).
+_SB_FLAGS = cv2.CALIB_CB_NORMALIZE_IMAGE | cv2.CALIB_CB_EXHAUSTIVE | cv2.CALIB_CB_ACCURACY
+_CLASSIC_FLAGS = cv2.CALIB_CB_ADAPTIVE_THRESH | cv2.CALIB_CB_NORMALIZE_IMAGE
+
+# Lado máximo (px) de la imagen reducida en la que se busca el tablero primero.
+# A 12 MP la cámara capta la rejilla de píxeles del monitor (moiré), que
+# confunde al detector; en la imagen reducida ese patrón desaparece.
+DETECTION_MAX_SIDE = 2000
+
+_SUBPIX_CRITERIA = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 50, 0.01)
 
 
 def board_object_points(
@@ -59,6 +67,66 @@ def focal_px_from_35mm(focal_35mm: float, image_size: tuple[int, int]) -> float:
     return focal_35mm * float(np.hypot(width, height)) / _FULL_FRAME_DIAGONAL_MM
 
 
+def _refine_corners(gray: np.ndarray, corners: np.ndarray, pattern_size: tuple[int, int]) -> np.ndarray:
+    """Ajusta las esquinas con precisión subpíxel sobre la imagen completa.
+
+    La ventana de búsqueda se adapta al tamaño de los cuadros en la foto
+    (~20 % del lado de un cuadro), para no "saltar" a una esquina vecina.
+    """
+    cols, rows = pattern_size
+    grid = corners.reshape(rows, cols, 2)
+    spacing = float(np.median(np.linalg.norm(np.diff(grid, axis=1), axis=2)))
+    half_window = int(np.clip(0.2 * spacing, 3, 30))
+    refined = cv2.cornerSubPix(
+        gray,
+        corners.reshape(-1, 1, 2).astype(np.float32),
+        (half_window, half_window),
+        (-1, -1),
+        _SUBPIX_CRITERIA,
+    )
+    return refined.reshape(-1, 2)
+
+
+def find_corners(
+    gray: np.ndarray,
+    pattern_size: tuple[int, int] = DEFAULT_PATTERN,
+    max_side: int = DETECTION_MAX_SIDE,
+) -> tuple[np.ndarray | None, str | None]:
+    """Busca el tablero con varios intentos, del más fiable al último recurso.
+
+    1. Detector SB sobre la imagen reducida a `max_side`.
+    2. Detector SB sobre la imagen completa.
+    3. Detector clásico sobre la imagen reducida.
+
+    Las esquinas encontradas se escalan a la resolución original y se refinan
+    allí con precisión subpíxel.
+
+    Returns:
+        (esquinas (N, 2), nombre del intento que funcionó) o (None, None).
+    """
+    scale = min(1.0, max_side / max(gray.shape))
+    small = gray
+    if scale < 1:
+        small = cv2.resize(gray, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
+
+    attempts = [("sb_reduced", small, scale, "sb")]
+    if scale < 1:
+        attempts.append(("sb_full", gray, 1.0, "sb"))
+    attempts.append(("classic_reduced", small, scale, "classic"))
+
+    for label, image, image_scale, kind in attempts:
+        if kind == "sb":
+            found, corners = cv2.findChessboardCornersSB(image, pattern_size, flags=_SB_FLAGS)
+        else:
+            found, corners = cv2.findChessboardCorners(image, pattern_size, flags=_CLASSIC_FLAGS)
+        if found:
+            # Convención de cv2.resize: el centro del píxel x de la imagen
+            # reducida corresponde a (x + 0.5) / escala - 0.5 en la original.
+            corners = (corners.reshape(-1, 2) + 0.5) / image_scale - 0.5
+            return _refine_corners(gray, corners, pattern_size).astype(np.float32), label
+    return None, None
+
+
 @dataclass
 class Detections:
     """Resultado de buscar el tablero en un conjunto de fotos."""
@@ -66,6 +134,7 @@ class Detections:
     image_size: tuple[int, int]  # (ancho, alto) en píxeles
     image_paths: list[Path] = field(default_factory=list)
     corners: list[np.ndarray] = field(default_factory=list)  # (N, 2) por foto
+    methods: list[str] = field(default_factory=list)  # intento que funcionó, por foto
     rejected: list[Path] = field(default_factory=list)
 
 
@@ -73,6 +142,7 @@ def detect_corners(
     image_paths: list[Path],
     pattern_size: tuple[int, int] = DEFAULT_PATTERN,
     expected_size: tuple[int, int] | None = None,
+    max_side: int = DETECTION_MAX_SIDE,
 ) -> Detections:
     """Busca las esquinas del tablero en cada foto.
 
@@ -102,10 +172,11 @@ def detect_corners(
                 f"{Path(path).name} mide {size[0]}x{size[1]} px, distinto del resto"
             )
 
-        found, corners = cv2.findChessboardCornersSB(gray, pattern_size, flags=_SB_FLAGS)
-        if found:
+        corners, method = find_corners(gray, pattern_size, max_side=max_side)
+        if corners is not None:
             detections.image_paths.append(Path(path))
-            detections.corners.append(corners.reshape(-1, 2).astype(np.float32))
+            detections.corners.append(corners)
+            detections.methods.append(method)
         else:
             detections.rejected.append(Path(path))
 
