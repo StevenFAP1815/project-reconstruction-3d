@@ -17,13 +17,16 @@ captura → calibración → preprocesamiento → SfM (poses + nube dispersa)
 
 ## Objetos
 
-| Categoría | Requisito | Objeto elegido |
-|---|---|---|
-| O1 — Control | Textura rica, mate, forma simple | _por definir_ |
-| O2 — Geometría compleja | Concavidades, huecos o detalle fino | _por definir_ |
-| O3 — Superficie difícil | Poca textura, brillante o reflectante | _por definir_ |
-| O4 — Escala distinta | ≤ 10 cm o ≥ 50 cm | _por definir_ |
-| O5 — Libre / aplicado | Vinculado a la aplicación del proyecto | _por definir_ |
+| Categoría | Requisito | Objeto elegido | Fotos | Dificultad esperada |
+|---|---|---|---|---|
+| O1 — Control | Textura rica, mate, forma simple | Caja de cartón de leche (`caja-carton-leche`) | 73 | Baja: superficie impresa y mate, ideal como referencia |
+| O2 — Geometría compleja | Concavidades, huecos o detalle fino | Canasto de flores (`canasto-flores`) | 93 | Media: tejido con huecos y oclusiones |
+| O3 — Superficie difícil | Poca textura, brillante o reflectante | Vaso de vidrio (`vaso-vidrio`) | 81 | Muy alta: transparente y reflectante, casi sin puntos estables |
+| O4 — Escala distinta | ≤ 10 cm o ≥ 50 cm | Audífonos (`audifonos`) | 121 | Media-alta: objeto pequeño, poco área útil por foto |
+| O5 — Libre / aplicado | Vinculado a la aplicación del proyecto | Colador de cocina (`colador-cocina`) | 86 | Alta: malla con patrón repetitivo (falsas coincidencias) |
+
+> El vaso y el colador son casos difíciles a propósito: forman parte del
+> experimento para comparar dónde fallan SfM y los métodos de IA.
 
 ## Estructura de resultados
 
@@ -49,4 +52,5 @@ Las fotografías y los modelos 3D **no se versionan en Git** por su tamaño
 
 ## Licencia
 
-_Por definir._
+Código bajo licencia [MIT](LICENSE). Las fotografías de `data/` no se
+publican y no están cubiertas por esta licencia.
