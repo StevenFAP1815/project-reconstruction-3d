@@ -50,6 +50,8 @@ def test_create_builds_structure_and_is_idempotent(tmp_path):
         assert (paths.results / name).is_dir()
     assert paths.zips.is_dir()
     assert paths.calibration.is_dir()
+    assert paths.calibration_results == paths.results / "calibration"
+    assert paths.calibration_results.is_dir()
     assert paths.work.is_dir()
     assert paths.checkpoints.is_dir()
     assert marker.read_text() == "no borrar"

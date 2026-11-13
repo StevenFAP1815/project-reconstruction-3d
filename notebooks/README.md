@@ -6,6 +6,7 @@ del pipeline.
 | Notebook | Propósito |
 |---|---|
 | `00_setup_colab.ipynb` | Prepara la sesión de Colab: Drive, código, dependencias, carpetas, GPU y fotos. |
+| `01_calibration.ipynb` | Calibra la cámara con el tablero: K, distorsión y error RMS (criterio 3). |
 
 Reglas:
 
