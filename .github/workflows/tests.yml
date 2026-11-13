@@ -1,0 +1,28 @@
+# Integración continua (CI): ejecuta los tests en cada Pull Request y en cada
+# push a main, en una máquina limpia de GitHub. Si algún test falla, el PR
+# muestra una cruz roja y no se debe hacer merge.
+name: tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Instalar dependencias de desarrollo
+        run: pip install -r requirements-dev.txt
+
+      - name: Ejecutar tests
+        run: pytest -v

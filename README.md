@@ -24,30 +24,24 @@ tests/          # tests automatizados (pytest)
 notebooks/      # experimentos por etapa/método
 results/        # salidas por objeto y método (solo meta.json en Git)
 docs/           # informe y figuras livianas
-requirements.txt
+requirements-dev.txt   # entorno local y CI (tests)
 ```
 
-## Instalación (entorno local)
+## Entorno local (solo tests)
 
-Requiere **Python 3.11** (varias dependencias, como `pycolmap 3.10`, no
-publican paquetes para versiones más nuevas).
+El pipeline se ejecuta en **Google Colab** (GPU). En local solo se necesita un
+entorno ligero para ejecutar los tests, con **Python 3.13**:
 
 ```powershell
-py -3.11 -m venv .venv
+py -3.13 -m venv .venv
 .venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-```
-
-Los métodos de IA se ejecutan en Google Colab (ver `notebooks/README.md`).
-
-## Tests
-
-```powershell
 pip install -r requirements-dev.txt
 pytest
 ```
 
 Los tests viven en `tests/` y usan carpetas temporales, no las fotos de `data/`.
+GitHub Actions los ejecuta automáticamente en cada Pull Request
+(`.github/workflows/tests.yml`).
 
 ## Objetos
 
