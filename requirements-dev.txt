@@ -1,3 +1,5 @@
-# Dependencias de desarrollo (tests). Incluye las dependencias base.
--r requirements.txt
+# Dependencias del entorno local y de la CI (Python 3.13).
+# El código de src/recon3d solo usa la librería estándar de Python, así que
+# aquí basta con la herramienta de tests. Las dependencias del pipeline
+# (pycolmap, torch, ...) se instalan en Colab: ver requirements-colab.txt.
 pytest==8.3.3
