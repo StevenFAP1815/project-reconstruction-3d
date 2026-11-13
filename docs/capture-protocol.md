@@ -104,7 +104,7 @@ error de lectura de la regla (≈ 1 mm) pesa menos en términos relativos
 | Objeto | Medida para escalar | Medidas para evaluar el error |
 |---|---|---|
 | `caja-carton-leche` | Alto: 196 mm | Ancho: 93 mm · Fondo: 58 mm |
-| `canasto-flores` | Diámetro del canasto: 150 mm | Alto del canasto: 85 mm · Alto total: 202 mm |
+| `canasto-flores` | Diámetro del canasto: 150 mm | Alto del canasto: 85 mm · Alto total: 202 mm · Ancho máximo de las flores: 240 mm |
 | `vaso-vidrio` | Alto: 143 mm | Diámetro de la boca: 79 mm · Diámetro de la base: 72 mm |
 | `audifonos` | Ancho: 60 mm | Alto: 43 mm · Fondo: 20 mm |
 | `colador-cocina` | Largo total: 206 mm | Diámetro del aro: 91 mm · Profundidad de la malla: 45 mm |
@@ -131,11 +131,13 @@ Los cinco objetos cuentan con las tres medidas físicas que exige la rúbrica.
 O4 cumple además el requisito de escala distinta: la mayor dimensión de los
 audífonos es 60 mm (≤ 100 mm).
 
-**Nota sobre el canasto.** Las flores sobresalen 117 mm por encima del
-canasto (202 − 85). Ese valor se deriva de otras dos medidas, por lo que no
+**Nota sobre el canasto.** Además de las tres medidas de la tabla, se registró
+una cuarta: el **ancho máximo de las flores, 240 mm**, que sobresalen
+lateralmente del canasto. Las flores sobresalen también 117 mm por encima del
+canasto (202 − 85); ese valor se deriva de otras dos medidas, por lo que no
 cuenta como medida independiente. Como las flores no forman una superficie
-lisa, el alto total tiene una incertidumbre mayor que el resto
-(aproximadamente ± 5 mm).
+lisa, el alto total y el ancho de las flores tienen una incertidumbre mayor
+que el resto (aproximadamente ± 5 mm).
 
 **Nota sobre el colador.** El largo total (206 mm) va desde el extremo del
 mango hasta el borde opuesto del aro. La parte que filtra se midió por
