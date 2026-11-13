@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tablero de calibración</title>
+<style>
+  :root { --bg: #ffffff; --ink: #000000; --panel: #f2f2f2; --text: #111111; }
+  html, body { margin: 0; height: 100%; background: var(--bg); overflow: hidden; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+  #help {
+    position: fixed; top: 16px; left: 16px; max-width: 480px;
+    background: var(--panel); color: var(--text); border: 1px solid #999;
+    font: 15px/1.45 system-ui, sans-serif; padding: 14px 18px; border-radius: 6px;
+  }
+  #help h1 { font-size: 17px; margin: 0 0 6px; }
+  #help code { background: #fff; padding: 0 4px; }
+</style>
+</head>
+<body>
+<canvas id="board"></canvas>
+<div id="help">
+  <h1>Tablero de calibración 9 × 6</h1>
+  <p>10 × 7 cuadros = <b>9 × 6 esquinas internas</b>.</p>
+  <p id="info"></p>
+  <ol>
+    <li>Pulsa <code>F</code> para pantalla completa.</li>
+    <li>Haz clic para ocultar este panel (otra vez para mostrarlo).</li>
+    <li>Mide con la regla el ancho de <b>los 10 cuadros</b> de una fila y
+        divide entre 10: ese es el tamaño del cuadro en mm.</li>
+  </ol>
+</div>
+<script>
+  // El tablero se dibuja en píxeles reales de la pantalla (devicePixelRatio),
+  // así todos los cuadros miden exactamente lo mismo aunque Windows use
+  // escalado (125 %, 150 %...). Cuadros desiguales empeorarían la calibración.
+  const COLS = 10, ROWS = 7;          // cuadros (9 x 6 esquinas internas)
+  const canvas = document.getElementById("board");
+  const help = document.getElementById("help");
+  const info = document.getElementById("info");
+
+  function draw() {
+    const dpr = window.devicePixelRatio || 1;
+    const w = Math.round(window.innerWidth * dpr);
+    const h = Math.round(window.innerHeight * dpr);
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+
+    // Un cuadro de margen blanco alrededor: el detector lo necesita.
+    const square = Math.floor(Math.min(w / (COLS + 2), h / (ROWS + 2)));
+    const x0 = Math.floor((w - COLS * square) / 2);
+    const y0 = Math.floor((h - ROWS * square) / 2);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = "#000000";
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        if ((r + c) % 2 === 0) ctx.fillRect(x0 + c * square, y0 + r * square, square, square);
+      }
+    }
+    info.textContent = `Pantalla: ${w} × ${h} px reales · cuadro: ${square} px reales.`;
+  }
+
+  window.addEventListener("resize", draw);
+  document.addEventListener("click", () => {
+    help.style.display = help.style.display === "none" ? "" : "none";
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "f" || e.key === "F") {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    }
+  });
+  draw();
+</script>
+</body>
+</html>
