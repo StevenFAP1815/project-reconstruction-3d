@@ -1,0 +1,7 @@
+# Configuración de herramientas del proyecto.
+# Por ahora solo pytest: indica dónde están los tests y añade src/ al path
+# para que `import recon3d` funcione sin instalar el paquete.
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
