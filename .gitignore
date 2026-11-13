@@ -1,0 +1,79 @@
+# ==========================================================
+# .gitignore — Proyecto Integrador Bloque 2: Reconstrucción 3D
+# ==========================================================
+# Regla general: Git guarda CÓDIGO y DOCUMENTACIÓN (texto liviano).
+# Las fotos, nubes de puntos, mallas y pesos de modelos son grandes,
+# se regeneran con el código y se comparten por enlaces externos.
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# ---------- Entornos virtuales ----------
+.venv/
+venv/
+env/
+.conda/
+
+# ---------- Jupyter ----------
+.ipynb_checkpoints/
+
+# ---------- Secretos y configuración local ----------
+.env
+.env.*
+!.env.example
+
+# ---------- Datos: fotografías capturadas ----------
+# Pesan cientos de MB y pueden contener metadatos (EXIF, GPS).
+data/
+*.jpg
+*.jpeg
+*.JPG
+*.JPEG
+*.png
+*.PNG
+*.heic
+*.HEIC
+*.dng
+*.DNG
+*.mp4
+*.MOV
+# Excepción: imágenes livianas para el README o el informe
+!docs/**/*.png
+!docs/**/*.jpg
+
+# ---------- Resultados 3D pesados ----------
+# Se guarda la estructura results/<objeto>/<metodo>/ y su meta.json,
+# pero no los archivos pesados (se enlazan en el informe).
+results/**/*.ply
+results/**/*.obj
+results/**/*.mtl
+results/**/*.glb
+results/**/*.npz
+results/**/*.splat
+
+# ---------- Artefactos de COLMAP y otros métodos ----------
+*.db
+*.db-shm
+*.db-wal
+colmap_workspace/
+outputs/
+
+# ---------- Pesos de modelos de IA ----------
+checkpoints/
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+
+# ---------- Sistema operativo y editores ----------
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# ---------- Archivos temporales de Office ----------
+~$*
