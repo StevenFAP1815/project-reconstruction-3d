@@ -15,6 +15,30 @@ captura → calibración → preprocesamiento → SfM (poses + nube dispersa)
         → reconstrucción densa (MVS) → malla → escala métrica y evaluación
 ```
 
+## Estructura del repositorio
+
+```
+data/           # fotografías por objeto (no se versiona)
+src/recon3d/    # código reutilizable (paquete Python)
+notebooks/      # experimentos por etapa/método
+results/        # salidas por objeto y método (solo meta.json en Git)
+docs/           # informe y figuras livianas
+requirements.txt
+```
+
+## Instalación (entorno local)
+
+Requiere **Python 3.11** (varias dependencias, como `pycolmap 3.10`, no
+publican paquetes para versiones más nuevas).
+
+```powershell
+py -3.11 -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+```
+
+Los métodos de IA se ejecutan en Google Colab (ver `notebooks/README.md`).
+
 ## Objetos
 
 | Categoría | Requisito | Objeto elegido |

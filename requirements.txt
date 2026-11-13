@@ -1,0 +1,14 @@
+# Dependencias base del proyecto (entorno local, Python 3.11).
+# Versiones fijadas (==) para que cualquiera reproduzca el mismo entorno.
+# pycolmap 3.10.0 es la versión que usan las guías del curso.
+#
+# Las dependencias pesadas de IA (torch, vggt, dust3r, nerfstudio, ...) NO van
+# aquí: se instalan dentro de cada notebook en Google Colab (GPU).
+
+numpy==1.26.4
+scipy==1.13.1
+pandas==2.2.3
+matplotlib==3.9.2
+opencv-python==4.10.0.84
+pycolmap==3.10.0
+trimesh==4.4.9
