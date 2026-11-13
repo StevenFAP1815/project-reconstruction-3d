@@ -60,6 +60,7 @@ results/**/*.splat
 *.db-wal
 colmap_workspace/
 outputs/
+work/
 
 # ---------- Pesos de modelos de IA ----------
 checkpoints/

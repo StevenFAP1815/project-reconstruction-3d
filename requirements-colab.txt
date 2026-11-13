@@ -1,0 +1,8 @@
+# Paquetes que se instalan en Google Colab, encima de su imagen base.
+#
+# Colab ya trae numpy, scipy, pandas, matplotlib, opencv y torch. NO se
+# reinstalan: cambiar sus versiones puede romper la compatibilidad entre ellos.
+# Sus versiones reales quedan registradas en el meta.json de cada corrida.
+#
+# pycolmap-cuda12 es la variante de pycolmap con soporte de GPU (CUDA 12).
+pycolmap-cuda12==4.2.1

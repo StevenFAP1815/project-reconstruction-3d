@@ -21,6 +21,7 @@ captura → calibración → preprocesamiento → SfM (poses + nube dispersa)
 data/           # fotografías por objeto (no se versiona)
 src/recon3d/    # código reutilizable (paquete Python)
 tests/          # tests automatizados (pytest)
+scripts/        # utilidades de línea de comandos (p. ej. crear zips de fotos)
 notebooks/      # experimentos por etapa/método
 results/        # salidas por objeto y método (solo meta.json en Git)
 docs/           # informe y figuras livianas
@@ -78,9 +79,53 @@ results/<objeto>/<metodo>/
 Las fotografías y los modelos 3D **no se versionan en Git** por su tamaño
 (ver `.gitignore`); se compartirán mediante enlaces externos.
 
-## Flujo de trabajo
+## Flujo de trabajo: GitHub + Colab + Drive
 
-- `main` contiene solo trabajo revisado.
+Cada herramienta tiene un único papel:
+
+| Herramienta | Papel |
+|---|---|
+| **GitHub** | Fuente oficial del código y de los notebooks. |
+| **Google Colab** | Ejecución con GPU. Los notebooks se abren desde GitHub. |
+| **Google Drive** | Fotos (zips) y resultados pesados de cada corrida. |
+
+La carpeta de Drive `Mi unidad/project-reconstruction-3d/` es un espejo del
+repositorio y la crea automáticamente `notebooks/00_setup_colab.ipynb`:
+
+```
+project-reconstruction-3d/
+├── data/
+│   ├── zips/<objeto>.zip      # fotos subidas desde local
+│   └── calibration/           # fotos del tablero/ChArUco
+├── results/<objeto>/<metodo>/ # salidas de cada corrida + meta.json
+├── work/                      # temporales (no se descargan)
+└── checkpoints/               # pesos de modelos de IA (no se descargan)
+```
+
+Pasos:
+
+1. **Preparar las fotos (local):** `python scripts/make_data_zips.py` crea
+   `data/zips/<objeto>.zip`.
+2. **Crear la estructura en Drive:** abrir `00_setup_colab.ipynb` en Colab
+   (insignia "Abrir en Colab") y ejecutarlo una vez.
+3. **Subir las fotos:** copiar el contenido de `data/zips/` local a
+   `data/zips/` en Drive.
+4. **Trabajar en Colab:** cada notebook guarda sus salidas en
+   `results/<objeto>/<metodo>/` y registra un `meta.json`
+   (`recon3d.results.write_meta`).
+5. **Traer resultados a local:** descargar `results/` de Drive y pegar su
+   contenido en `results/` del repositorio. Git solo versiona los `meta.json`.
+6. **Guardar cambios de un notebook:** en Colab, *Archivo → Guardar una copia
+   en GitHub* sobre una rama nueva, o descargar el `.ipynb` y hacer commit en
+   local. Nunca se edita la misma versión en dos sitios a la vez.
+
+Las dependencias del pipeline están fijadas en `requirements-colab.txt`; las
+que Colab ya trae no se reinstalan y sus versiones quedan registradas en cada
+`meta.json`.
+
+### Ramas y Pull Requests
+
+- `main` está protegida y contiene solo trabajo revisado.
 - Cada implementación nueva se desarrolla en una rama propia y entra a `main`
   mediante un **Pull Request pequeño** que se revisa antes del merge.
 
