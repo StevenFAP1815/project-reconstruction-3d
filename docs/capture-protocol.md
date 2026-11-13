@@ -1,10 +1,6 @@
 # Protocolo de captura
 
 Este documento registra **cómo** se tomaron las fotografías de cada objeto.
-Sin esta información los resultados no se pueden reproducir ni comparar, y la
-escala métrica no se puede justificar en el informe.
-
-Los campos marcados como _por completar_ los debe llenar quien hizo la captura.
 
 ## 1. Equipo
 
@@ -17,21 +13,21 @@ Datos extraídos de los metadatos EXIF de las fotografías:
 | Distancia focal | 5,25 mm (≈ 24 mm equivalente en 35 mm) |
 | Zoom | Sin zoom: la focal es la misma en los 5 objetos |
 | Formato | JPEG |
-| Trípode / soporte | _por completar_ |
-| Modo de enfoque y exposición (auto / bloqueado) | _por completar_ |
+| Trípode / soporte | A pulso de mano |
+| Modo de enfoque y exposición (auto / bloqueado) | manual/bloqueado |
 
-Como la focal no cambia entre objetos, **una sola calibración de cámara** sirve
-para todo el conjunto, siempre que no se haya usado zoom digital ni otra lente.
+La focal no cambia entre objetos, **una sola calibración de cámara** sirve
+para todo el conjunto.
 
 ## 2. Condiciones generales
 
 | Campo | Valor |
 |---|---|
 | Fecha de captura | 2026-11-13 |
-| Lugar (interior / exterior) | _por completar_ |
-| Iluminación (natural, lámpara, difusa, dirección) | _por completar_ |
-| Fondo y superficie de apoyo | _por completar_ |
-| Patrón de movimiento (órbitas, alturas, solapamiento aprox.) | _por completar_ |
+| Lugar (interior / exterior) |interior |
+| Iluminación (natural, lámpara, difusa, dirección) | difusa/ luces calidas |
+| Fondo y superficie de apoyo | fondo negro y un banquito de apoyo, tambien con fondo negro |
+| Patrón de movimiento (órbitas, alturas, solapamiento aprox.) | 2-3 orbitas a distintas alturas según el objeto. 4-5 fotos de solapamiento |
 
 ## 3. Referencia de escala métrica
 
@@ -41,21 +37,21 @@ visible en las fotos.
 
 | Campo | Valor |
 |---|---|
-| Objeto de referencia (regla, tablero de ajedrez, marcador ArUco, ...) | _por completar_ |
-| Medida conocida de la referencia (mm) | _por completar_ |
-| Instrumento usado para medir los objetos (regla, calibre) | _por completar_ |
+| Objeto de referencia (regla, tablero de ajedrez, marcador ArUco, ...) | No se aplicó un objeto de referencia |
+| Medida conocida de la referencia (mm) | No se aplicó un objeto de referencia |
+| Instrumento usado para medir los objetos (regla, calibre) | regla escolar estándar |
 
 ## 4. Registro por objeto
 
 Las horas salen del nombre de los archivos (`IMG_AAAAMMDD_HHMMSS`).
 
-| Objeto | Categoría | Fotos | Hora (inicio–fin) | Medidas reales (alto × ancho × fondo, mm) | Observaciones |
+| Objeto | Categoría | Fotos | Hora (inicio–fin) | Medidas reales aprox. (alto × ancho × fondo, mm) | Observaciones |
 |---|---|---|---|---|---|
-| `caja-carton-leche` | O1 | 73 | 01:43–02:08 | _por completar_ | _por completar_ |
-| `canasto-flores` | O2 | 93 | 02:08–02:17 | _por completar_ | _por completar_ |
-| `vaso-vidrio` | O3 | 81 | 03:13–03:16 | _por completar_ | _por completar_ |
-| `audifonos` | O4 | 121 | 12:57–13:03 | _por completar_ (debe ser ≤ 100 mm o ≥ 500 mm) | _por completar_ |
-| `colador-cocina` | O5 | 86 | 02:34–02:38 | _por completar_ | _por completar_ |
+| `caja-carton-leche` | O1 | 73 | 01:43–02:08 | 196 x 93 x 58 |medición facil esquinas definidas |
+| `canasto-flores` | O2 | 93 | 02:08–02:17 | 202 x diametro (240) | medición complicada las medidas son muy aproximadas, considerar que el florero es circular |
+| `vaso-vidrio` | O3 | 81 | 03:13–03:16 | 143 x diametro (79) | medición relativamente sencilla, considerar diametro para profundidad |
+| `audifonos` | O4 | 121 | 12:57–13:03 | 43 x 60 x 20 | medición relativamente sencilla, bordes redondeados dificultan una medidad precisa |
+| `colador-cocina` | O5 | 86 | 02:34–02:38 | 45 x 206 x diametro (91) | medición compleja: la longitud total (206 mm) abarca el eje mayor desde el extremo distal del mango hasta el borde opuesto del aro; mientras que la sección funcional de filtrado se caracterizó de forma independiente mediante el diámetro externo del aro (91 mm) y la altura o profundidad máxima de la malla (45 mm) medida perpendicularmente al plano del aro. |
 
 ## 5. Privacidad
 
