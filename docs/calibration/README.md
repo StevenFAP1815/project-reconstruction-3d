@@ -70,7 +70,7 @@ Las fotos se guardan en `data/calibration/` y se suben a Drive como
 | Cámara | Mismo teléfono (`ALT-LX3`), lente 1×, 5,25 mm, vertical (3000 × 4000) |
 | Configuración | Pro/Manual, enfoque manual (MF), 1/60 s, ISO 250 (ISO 125 en las 3 primeras) |
 | N.º de fotos tomadas | 162 |
-| N.º de fotos seleccionadas | 28, guardadas en `data/calibration/` |
+| N.º de fotos seleccionadas | 49, guardadas en `data/calibration/` (28 en la primera selección + 21 añadidas) |
 
 ### Criterios de selección
 
@@ -85,8 +85,20 @@ Las 162 fotos se revisaron visualmente y se conservaron 28. Se descartaron:
 
 Las 28 seleccionadas combinan vistas frontales y oblicuas, a distintas
 distancias y con el tablero en el centro, a la izquierda y a la derecha del
-encuadre. Las 134 restantes se conservan fuera del repositorio por si hiciera
-falta ampliar la selección.
+encuadre.
+
+**Ampliación de la selección.** En la primera ejecución de
+`01_calibration.ipynb` el detector solo encontró el tablero en 8 de las 28
+fotos, por debajo de las 15 vistas que exige la rúbrica. Se tomaron dos
+medidas:
+
+1. Se añadieron 21 fotos más con el tablero completo, priorizando las vistas
+   inclinadas, que son las que más información aportan sobre la focal.
+2. Se hizo más robusta la detección: primero se busca el tablero en la foto
+   reducida a 2000 px, donde desaparece el moiré de la pantalla, y las
+   esquinas se refinan después sobre la foto completa.
+
+Las 113 fotos restantes se conservan fuera del repositorio.
 
 ### Observaciones
 
