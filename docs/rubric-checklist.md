@@ -10,7 +10,7 @@ Estados: `pendiente` · `en curso` · `listo`.
 
 | Entregable | Estado |
 |---|---|
-| Problema y objetivos | pendiente |
+| Problema y objetivos | listo (`docs/problem-objectives.md`) |
 | 5 objetos elegidos y justificados | en curso (tabla O1-O5 en README) |
 | Calibración terminada | listo (`results/calibration/`, RMS 0,81 px) |
 | Dataset de al menos 2 objetos capturado | listo (5 objetos) |
@@ -21,7 +21,7 @@ Estados: `pendiente` · `en curso` · `listo`.
 
 | # | Criterio | Pts | Requisitos clave para "Excelente" | Estado |
 |---|---|---|---|---|
-| 1 | Problema, objetivos y objetos | 8 | Aplicación real, objetivos medibles, O1-O5 con dificultad anticipada | en curso |
+| 1 | Problema, objetivos y objetos | 8 | Aplicación real, objetivos medibles, O1-O5 con dificultad anticipada | listo (`docs/problem-objectives.md`) |
 | 2 | Protocolo de captura y dataset | 10 | Focal fija; ISO, exposición y enfoque bloqueados; iluminación difusa; ≥ 2 órbitas con 60-80 % de solapamiento; referencia de escala; medidas físicas; tabla por objeto; **diagrama de trayectoria** | en curso (`docs/capture-protocol.md`; diagramas de trayectoria y solapamiento medido en `docs/figures/`) |
 | 3 | Calibración | 8 | Tablero o ChArUco con ≥ 15 vistas; K, distorsión, RMS ≤ 0,5 px; modelo pinhole; comparar con intrínsecos de SfM | listo (42 vistas, RMS 0,81 px justificado por moiré; comparación en `docs/sfm-results.md`) |
 | 4 | Preprocesamiento | 6 | Filtro de borrosas cuantitativo (varianza del Laplaciano); corrección de distorsión; máscaras; **medir el efecto** de cada paso | en curso (borrosas y CLAHE medidos en `02b`; distorsión en `03`; sin máscaras) |

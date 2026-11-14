@@ -125,3 +125,7 @@ Todas las corridas se ejecutaron en Google Colab con una GPU NVIDIA Tesla T4
   repetitivos no es viable sin cambiar la captura (por ejemplo, un recubrimiento
   mate temporal, que no se aplicó; ver `docs/capture-protocol.md`, sección 6) o
   sin recurrir a un método de IA.
+
+## 6. Uso de herramientas de IA
+
+Para la elaboración de este proyecto se emplearon Claude Code y Gemini.
