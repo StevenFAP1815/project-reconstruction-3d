@@ -10,6 +10,7 @@ del pipeline.
 | `02_sfm_colmap.ipynb` | SfM definitivo con la configuración `D_calibrada` (nitidez, CLAHE, SIFT sensible, intrínsecos calibrados), métricas, líneas epipolares y trayectoria (criterios 4 y 5). Un objeto por ejecución (`OBJECT`). |
 | `02b_sfm_experiments.ipynb` | Mide el efecto de cada mejora de SfM (CLAHE, SIFT sensible, intrínsecos calibrados) sobre un objeto y guarda la mejor en `colmap-v2`. |
 | `03_dense_mesh_scale.ipynb` | Reconstrucción densa (MVS), limpieza de la nube, malla de Poisson, escala métrica con error dimensional y exportación `.ply`/`.obj`/`.glb` (criterio 6). Un objeto por ejecución (`OBJECT`). |
+| `04_ai_vggt.ipynb` | Método de IA (VGGT): cámaras, profundidad y nube 3D predichas por una red, con la misma limpieza, escala y error dimensional que `03`, más tiempo y memoria de GPU (criterio 7). Un objeto por ejecución (`OBJECT`). |
 | `runs/` | Copias ejecutadas por objeto (evidencia); ver `runs/README.md`. |
 
 Reglas:

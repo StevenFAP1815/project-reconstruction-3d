@@ -29,6 +29,8 @@ de `results/` ({today}). No se edita a mano: se regenera tras cada corrida.
   la limpieza en las filas densas.
 - **Error dim. medio (%)**: media del error absoluto de las medidas que no se
   usaron para escalar (referencia de la rúbrica: ≤ 2 %).
+- **Cobertura (%)**: sectores de 10° alrededor del objeto con puntos
+  (completitud; 100 % = reconstruido por todos sus lados).
 - **Estado** `omitido`: el método no pudo ejecutarse (por ejemplo, MVS con
   menos de 10 fotos registradas).
 

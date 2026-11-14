@@ -17,12 +17,14 @@ STAGES = {
     "colmap": "SfM disperso (base)",
     "colmap-v2": "SfM disperso (D_calibrada)",
     "colmap-mvs": "MVS + malla",
+    "vggt": "IA (VGGT)",
 }
 
 COLUMNS = [
     "object", "method", "stage", "status", "n_images", "n_used", "n_registered",
     "registered_pct", "n_models", "n_points", "reprojection_error_px",
-    "scale_factor", "mean_abs_error_pct", "runtime_s", "gpu", "code_version",
+    "scale_factor", "mean_abs_error_pct", "coverage_pct", "runtime_s", "peak_gpu_gb",
+    "gpu", "code_version",
 ]
 
 HEADERS = {
@@ -30,7 +32,8 @@ HEADERS = {
     "n_images": "Fotos", "n_used": "Usadas", "n_registered": "Registradas",
     "registered_pct": "Registradas (%)", "n_models": "Modelos", "n_points": "Puntos",
     "reprojection_error_px": "Error reproy. (px)", "scale_factor": "Escala (mm/u)",
-    "mean_abs_error_pct": "Error dim. medio (%)", "runtime_s": "Tiempo (s)",
+    "mean_abs_error_pct": "Error dim. medio (%)", "coverage_pct": "Cobertura (%)",
+    "runtime_s": "Tiempo (s)", "peak_gpu_gb": "Memoria GPU (GB)",
     "gpu": "GPU", "code_version": "Commit",
 }
 
@@ -90,7 +93,9 @@ def summarize_run(meta: dict, run_dir: Path) -> dict:
         "reprojection_error_px": _number(stats.get("mean_reprojection_error_px")),
         "scale_factor": meta.get("scale_factor"),
         "mean_abs_error_pct": extra.get("mean_abs_error_pct"),
+        "coverage_pct": extra.get("angular_coverage_pct"),
         "runtime_s": meta.get("runtime_s"),
+        "peak_gpu_gb": extra.get("peak_gpu_gb"),
         "gpu": (meta.get("environment") or {}).get("gpu"),
         "code_version": (meta.get("environment") or {}).get("code_version"),
     }

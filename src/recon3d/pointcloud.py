@@ -417,6 +417,29 @@ def measure(coords: np.ndarray, spec: dict, *, trim: float = 1.0) -> float:
     raise ValueError(f"Tipo de medida desconocido: {kind}")
 
 
+def angular_coverage(coords: np.ndarray, center: np.ndarray | None = None, *, bins: int = 36,
+                     min_fraction: float = 0.2) -> float:
+    """Completitud: % de sectores angulares alrededor del eje vertical con puntos.
+
+    Se divide la vuelta alrededor del objeto (en su marco, `object_frame`) en
+    `bins` sectores de igual ángulo. Un sector cuenta como cubierto si tiene al
+    menos `min_fraction` veces los puntos de un sector medio. Un objeto
+    reconstruido por todos sus lados da 100 %; uno visto solo por un lado, mucho
+    menos. Sirve para comparar métodos sobre el mismo objeto.
+
+    Args:
+        center: (x, y) del eje de giro. Conviene pasar el punto al que miran las
+            cámaras: el centro de una nube incompleta está desplazado hacia la
+            parte reconstruida. None = centro de la caja envolvente.
+    """
+    coords = np.asarray(coords, dtype=float)
+    if center is None:
+        center = (coords[:, :2].min(axis=0) + coords[:, :2].max(axis=0)) / 2
+    angles = np.arctan2(coords[:, 1] - center[1], coords[:, 0] - center[0])
+    counts, _ = np.histogram(angles, bins=bins, range=(-np.pi, np.pi))
+    return round(100.0 * float(np.mean(counts >= min_fraction * counts.mean())), 1)
+
+
 def dimensional_errors(coords: np.ndarray, measurements: list[dict], scale_by: str,
                        *, trim: float = 1.0) -> tuple[float, list[dict]]:
     """Escala con una medida y evalúa el error con las demás (estrategia de escalado A).
