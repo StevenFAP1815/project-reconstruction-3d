@@ -46,6 +46,16 @@ Los objetos están ordenados de menor a mayor dificultad esperada para SfM. El
 porcentaje de registro baja en ese mismo orden, a medida que el material cumple
 peor las hipótesis del método.
 
+### Prueba de `D_calibrada` en el canasto y los audífonos
+
+Se ejecutó también `D_calibrada` sobre el canasto y los audífonos. La
+configuración aceptó muchos más puntos, pero el objeto perdió la forma en la
+nube resultante, por lo que se mantuvo la línea base para ambos. La
+interpretación es que un detector más sensible y un registro más permisivo
+aceptan también correspondencias falsas en superficies repetitivas o
+brillantes: **más puntos no implica una reconstrucción mejor**. Esa ejecución
+no se versionó.
+
 ## Por qué cada resultado
 
 SfM supone que el objeto es **rígido, opaco y con textura propia**, y que su
