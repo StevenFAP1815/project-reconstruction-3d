@@ -317,6 +317,23 @@ def calibrate(
     )
 
 
+def colmap_camera_from_calibration(path: str | Path) -> tuple[str, list[float]]:
+    """Modelo y parámetros de cámara de COLMAP a partir de `calibration.json`.
+
+    - Si k3 = 0 (calibración v2), el modelo `OPENCV` de COLMAP
+      (fx, fy, cx, cy, k1, k2, p1, p2) coincide exactamente con OpenCV.
+    - Si k3 ≠ 0, se usa `FULL_OPENCV`, que añade k3..k6 (k4..k6 = 0).
+    """
+    camera_matrix, dist, _ = load_calibration(path)
+    fx, fy = camera_matrix[0, 0], camera_matrix[1, 1]
+    cx, cy = camera_matrix[0, 2], camera_matrix[1, 2]
+    k1, k2, p1, p2, k3 = (list(dist) + [0.0] * 5)[:5]
+    params = [fx, fy, cx, cy, k1, k2, p1, p2]
+    if k3 == 0:
+        return "OPENCV", [float(v) for v in params]
+    return "FULL_OPENCV", [float(v) for v in params + [k3, 0.0, 0.0, 0.0]]
+
+
 def save_calibration(result: CalibrationResult, path: str | Path) -> Path:
     """Guarda la calibración como JSON legible y devuelve su ruta."""
     target = Path(path)

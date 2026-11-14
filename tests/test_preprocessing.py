@@ -5,7 +5,20 @@ import pytest
 cv2 = pytest.importorskip("cv2")
 np = pytest.importorskip("numpy")
 
-from recon3d.preprocessing import flag_blurry, laplacian_variance  # noqa: E402
+from recon3d.preprocessing import enhance_contrast, flag_blurry, laplacian_variance  # noqa: E402
+
+
+def test_enhance_contrast_brightens_dark_low_contrast_image(tmp_path):
+    rng = np.random.default_rng(0)
+    dark = np.clip(rng.normal(30, 6, (300, 400, 3)), 0, 255).astype(np.uint8)
+    source = tmp_path / "dark.jpg"
+    cv2.imwrite(str(source), dark)
+
+    out = enhance_contrast(source, tmp_path / "out" / "dark.jpg")
+
+    result = cv2.imread(str(out))
+    assert result.shape == dark.shape
+    assert result.std() > dark.std()  # más contraste
 
 
 def _checkerboard(size=400, square=20):

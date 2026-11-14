@@ -17,7 +17,33 @@ import time
 from pathlib import Path
 
 import numpy as np
-import pycolmap
+
+try:
+    import pycolmap
+except ImportError:  # p. ej. en la CI: las funciones de COLMAP no se usan allí
+    pycolmap = None
+
+
+def set_options(target, values: dict | None) -> list[str]:
+    """Asigna opciones a un objeto de pycolmap y devuelve las que no existen.
+
+    Admite rutas con punto ("mapper.abs_pose_min_num_inliers"). Los nombres de
+    las opciones cambian entre versiones de pycolmap; en lugar de fallar, las
+    opciones desconocidas se devuelven para mostrarlas en el notebook.
+    """
+    ignored = []
+    for dotted, value in (values or {}).items():
+        *parents, name = dotted.split(".")
+        obj = target
+        try:
+            for parent in parents:
+                obj = getattr(obj, parent)
+            if not hasattr(obj, name):
+                raise AttributeError(name)
+            setattr(obj, name, value)
+        except (AttributeError, TypeError):
+            ignored.append(dotted)
+    return ignored
 
 
 def run_sfm(
@@ -28,6 +54,10 @@ def run_sfm(
     camera_model: str = "SIMPLE_RADIAL",
     camera_params: list[float] | None = None,
     refine_intrinsics: bool = True,
+    extraction_options: dict | None = None,
+    matching_options: dict | None = None,
+    mapping_options: dict | None = None,
+    report: dict | None = None,
 ) -> tuple["pycolmap.Reconstruction", dict, int]:
     """Ejecuta el pipeline completo y devuelve (reconstrucción, tiempos, n.º de modelos).
 
@@ -36,14 +66,23 @@ def run_sfm(
 
     Args:
         camera_model: modelo de cámara de COLMAP. "SIMPLE_RADIAL" (f, cx, cy, k)
-            para autocalibración; "FULL_OPENCV" para usar la calibración.
+            para autocalibración; "OPENCV" o "FULL_OPENCV" para la calibración.
         camera_params: intrínsecos iniciales en el orden del modelo. None =
             COLMAP los estima a partir del EXIF y de las propias fotos.
         refine_intrinsics: False = mantener fijos los intrínsecos dados.
+        extraction_options: opciones extra de `FeatureExtractionOptions`, p. ej.
+            {"sift.peak_threshold": 0.004}.
+        matching_options: opciones extra de `FeatureMatchingOptions`, p. ej.
+            {"guided_matching": True}.
+        mapping_options: opciones extra de `IncrementalPipelineOptions`, p. ej.
+            {"mapper.abs_pose_min_num_inliers": 15}.
+        report: diccionario opcional que se rellena con el tamaño de cada
+            modelo, las fotos sin registrar y las opciones no reconocidas.
 
     Raises:
         RuntimeError: si COLMAP no logra iniciar ninguna reconstrucción.
     """
+    ignored = []
     work = Path(work_dir)
     shutil.rmtree(work, ignore_errors=True)  # cada corrida empieza limpia
     (work / "sparse").mkdir(parents=True)
@@ -56,6 +95,7 @@ def run_sfm(
         reader.camera_params = ",".join(f"{value:.10g}" for value in camera_params)
     extraction = pycolmap.FeatureExtractionOptions()
     extraction.sift.max_num_features = max_features
+    ignored += [f"extraction.{name}" for name in set_options(extraction, extraction_options)]
 
     timings = {}
     start = time.perf_counter()
@@ -70,14 +110,26 @@ def run_sfm(
     timings["extraction_s"] = time.perf_counter() - start
 
     start = time.perf_counter()
-    pycolmap.match_exhaustive(database, device=device)
+    if matching_options:
+        matching = pycolmap.FeatureMatchingOptions()
+        ignored += [f"matching.{name}" for name in set_options(matching, matching_options)]
+        try:
+            pycolmap.match_exhaustive(database, matching_options=matching, device=device)
+        except TypeError:  # versión de pycolmap con otra firma
+            ignored.append("matching_options (no aceptado por match_exhaustive)")
+            pycolmap.match_exhaustive(database, device=device)
+    else:
+        pycolmap.match_exhaustive(database, device=device)
     timings["matching_s"] = time.perf_counter() - start
 
     options = pycolmap.IncrementalPipelineOptions()
     if not refine_intrinsics:
-        options.ba_refine_focal_length = False
-        options.ba_refine_principal_point = False
-        options.ba_refine_extra_params = False
+        ignored += set_options(options, {
+            "ba_refine_focal_length": False,
+            "ba_refine_principal_point": False,
+            "ba_refine_extra_params": False,
+        })
+    ignored += [f"mapping.{name}" for name in set_options(options, mapping_options)]
 
     start = time.perf_counter()
     models = pycolmap.incremental_mapping(database, image_dir, work / "sparse", options=options)
@@ -87,6 +139,13 @@ def run_sfm(
     if not models:
         raise RuntimeError("COLMAP no pudo iniciar ninguna reconstrucción")
     best = max(models.values(), key=lambda rec: rec.num_reg_images())
+
+    if report is not None:
+        all_names = sorted(p.name for p in Path(image_dir).iterdir() if p.is_file())
+        registered = set(camera_centers(best)[0])
+        report["model_sizes"] = sorted((rec.num_reg_images() for rec in models.values()), reverse=True)
+        report["unregistered"] = [name for name in all_names if name not in registered]
+        report["ignored_options"] = ignored
     return best, timings, len(models)
 
 
