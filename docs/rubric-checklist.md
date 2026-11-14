@@ -10,7 +10,7 @@ Estados: `pendiente` · `en curso` · `listo`.
 
 | Entregable | Estado |
 |---|---|
-| Problema y objetivos | en curso (borrador en `docs/problem-objectives.md`) |
+| Problema y objetivos | listo (`docs/problem-objectives.md`) |
 | 5 objetos elegidos y justificados | en curso (tabla O1-O5 en README) |
 | Calibración terminada | listo (`results/calibration/`, RMS 0,81 px) |
 | Dataset de al menos 2 objetos capturado | listo (5 objetos) |
@@ -21,22 +21,22 @@ Estados: `pendiente` · `en curso` · `listo`.
 
 | # | Criterio | Pts | Requisitos clave para "Excelente" | Estado |
 |---|---|---|---|---|
-| 1 | Problema, objetivos y objetos | 8 | Aplicación real, objetivos medibles, O1-O5 con dificultad anticipada | en curso (`docs/problem-objectives.md`, pendiente de revisión) |
-| 2 | Protocolo de captura y dataset | 10 | Focal fija; ISO, exposición y enfoque bloqueados; iluminación difusa; ≥ 2 órbitas con 60-80 % de solapamiento; referencia de escala; medidas físicas; tabla por objeto; **diagrama de trayectoria** | en curso (`docs/capture-protocol.md`; la trayectoria estimada está en `notebooks/runs/02_sfm_*`) |
+| 1 | Problema, objetivos y objetos | 8 | Aplicación real, objetivos medibles, O1-O5 con dificultad anticipada | listo (`docs/problem-objectives.md`) |
+| 2 | Protocolo de captura y dataset | 10 | Focal fija; ISO, exposición y enfoque bloqueados; iluminación difusa; ≥ 2 órbitas con 60-80 % de solapamiento; referencia de escala; medidas físicas; tabla por objeto; **diagrama de trayectoria** | en curso (`docs/capture-protocol.md`; diagramas de trayectoria y solapamiento medido en `docs/figures/`) |
 | 3 | Calibración | 8 | Tablero o ChArUco con ≥ 15 vistas; K, distorsión, RMS ≤ 0,5 px; modelo pinhole; comparar con intrínsecos de SfM | listo (42 vistas, RMS 0,81 px justificado por moiré; comparación en `docs/sfm-results.md`) |
 | 4 | Preprocesamiento | 6 | Filtro de borrosas cuantitativo (varianza del Laplaciano); corrección de distorsión; máscaras; **medir el efecto** de cada paso | en curso (borrosas y CLAHE medidos en `02b`; distorsión en `03`; sin máscaras) |
 | 5 | SfM y geometría epipolar | 14 | SIFT, RANSAC, F/E, registro incremental, triangulación, BA; por objeto: % registradas (≥ 90 %), n.º de puntos, longitud media de track, error de reproyección (< 1 px); líneas epipolares en un par | listo (5 objetos; ≥ 90 % solo en la caja con `D_calibrada`; ver `docs/sfm-results.md`) |
 | 6 | Densa, malla y escala | 12 | MVS; limpieza de outliers; malla Poisson o ball pivoting; escala en mm; exportar .ply/.obj/.glb; justificar parámetros | en curso (`03_dense_mesh_scale.ipynb`) |
 | 7 | Comparación con IA | 10 | Mismo objeto y mismas imágenes; explicar el principio del método; comparar precisión, completitud, tiempo y memoria | en curso (`04_ai_vggt.ipynb`: error dimensional, cobertura angular, tiempo y memoria de GPU) |
 | 8 | Evaluación y discusión | 14 | Tabla maestra objeto × método; error dimensional (≤ 2 %); figuras de los 5 modelos; análisis de fallos con causas verificadas | en curso (tabla maestra automática en `docs/master-table.md`; análisis de SfM en `docs/sfm-results.md`) |
-| 9 | Reproducibilidad, ética y viabilidad | 6 | Notebook de inicio a fin; versiones fijadas; semillas; `results/` y `meta.json` por corrida; costo computacional; licencias; ética | en curso (infraestructura) |
+| 9 | Reproducibilidad, ética y viabilidad | 6 | Notebook de inicio a fin; versiones fijadas; semillas; `results/` y `meta.json` por corrida; costo computacional; licencias; ética | en curso (`docs/reproducibility-ethics.md`; faltan los costos de MVS y VGGT) |
 | 10 | Conclusiones | 4 | Responder a cada objetivo; qué método conviene para cada tipo de objeto | pendiente |
 | 11 | Exposición y demostración | 8 | Demostración en vivo de los 5 modelos en un visor 3D | pendiente |
 
 ## Condiciones para todos los objetos
 
 - [x] Captura propia con 40-150 fotos por objeto (73-121 en todos).
-- [ ] Solapamiento de 60-80 % y al menos 2 órbitas de cámara (documentar).
+- [x] Solapamiento de 60-80 % y al menos 2 órbitas de cámara (documentado en `docs/capture-protocol.md`, sección 3).
 - [ ] Referencia de escala visible en la escena (regla, ArUco/ChArUco o tablero).
 - [x] Al menos 3 medidas físicas por objeto con calibrador o cinta (regla, ± 1 mm).
 - [ ] O3 (vaso de vidrio): documentar al menos una estrategia de mitigación o justificar por qué no se aplicó.
