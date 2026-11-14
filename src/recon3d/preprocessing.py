@@ -30,6 +30,37 @@ def laplacian_variance(image_path: str | Path, max_side: int = 1024) -> float:
     return float(cv2.Laplacian(gray, cv2.CV_64F).var())
 
 
+def enhance_contrast(
+    image_path: str | Path,
+    output_path: str | Path,
+    clip_limit: float = 2.0,
+    tile_grid: int = 8,
+) -> Path:
+    """Mejora el contraste de una foto oscura con CLAHE y la guarda.
+
+    CLAHE (Contrast Limited Adaptive Histogram Equalization) ecualiza el
+    histograma por zonas (`tile_grid` x `tile_grid`), de modo que aclara las
+    regiones oscuras sin quemar las claras. Se aplica solo a la luminosidad
+    (canal L del espacio de color LAB), para no alterar los colores.
+
+    En fotos subexpuestas, SIFT encuentra más puntos tras este paso porque sus
+    umbrales dependen del contraste local.
+    """
+    image = cv2.imread(str(image_path), cv2.IMREAD_COLOR)
+    if image is None:
+        raise ValueError(f"No se pudo leer la imagen: {image_path}")
+    lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
+    clahe = cv2.createCLAHE(clipLimit=clip_limit, tileGridSize=(tile_grid, tile_grid))
+    lab[:, :, 0] = clahe.apply(lab[:, :, 0])
+    enhanced = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
+
+    target = Path(output_path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if not cv2.imwrite(str(target), enhanced, [cv2.IMWRITE_JPEG_QUALITY, 95]):
+        raise ValueError(f"No se pudo escribir la imagen: {target}")
+    return target
+
+
 def flag_blurry(scores: dict[str, float], ratio: float = 0.35) -> list[str]:
     """Nombres cuya nitidez es menor que `ratio` × mediana del conjunto.
 

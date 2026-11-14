@@ -8,6 +8,7 @@ del pipeline.
 | `00_setup_colab.ipynb` | Prepara la sesión de Colab: Drive, código, dependencias, carpetas, GPU y fotos. |
 | `01_calibration.ipynb` | Calibra la cámara con el tablero: K, distorsión y error RMS (criterio 3). |
 | `02_sfm_colmap.ipynb` | Nitidez de las fotos, SfM con COLMAP, métricas, líneas epipolares, trayectoria y comparación de intrínsecos (criterios 4 y 5). Un objeto por ejecución (`OBJECT`). |
+| `02b_sfm_experiments.ipynb` | Mide el efecto de cada mejora de SfM (CLAHE, SIFT sensible, intrínsecos calibrados) sobre un objeto y guarda la mejor en `colmap-v2`. |
 
 Reglas:
 

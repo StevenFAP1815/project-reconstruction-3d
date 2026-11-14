@@ -13,6 +13,7 @@ np = pytest.importorskip("numpy")
 from recon3d.calibration import (  # noqa: E402
     board_object_points,
     calibrate,
+    colmap_camera_from_calibration,
     detect_corners,
     find_corners,
     focal_px_from_35mm,
@@ -146,6 +147,19 @@ def test_calibrate_can_estimate_k3(tmp_path):
     result = calibrate(detections, SQUARE_MM, PATTERN, min_views=10, fix_k3=False, outlier_ratio=None)
     assert result.fix_k3 is False
     assert result.camera_matrix[0, 0] == pytest.approx(500, rel=0.02)
+
+
+def test_colmap_camera_from_calibration_models(tmp_path):
+    detections = detect_corners(_render_views(tmp_path, n_views=12), PATTERN)
+    fixed = calibrate(detections, SQUARE_MM, PATTERN, min_views=10, fix_k3=True)
+    model, params = colmap_camera_from_calibration(save_calibration(fixed, tmp_path / "a.json"))
+    assert model == "OPENCV" and len(params) == 8
+    assert params[0] == pytest.approx(fixed.camera_matrix[0, 0])
+
+    free = calibrate(detections, SQUARE_MM, PATTERN, min_views=10, fix_k3=False)
+    free.dist_coeffs[4] = 0.1  # forzar k3 distinto de 0
+    model, params = colmap_camera_from_calibration(save_calibration(free, tmp_path / "b.json"))
+    assert model == "FULL_OPENCV" and len(params) == 12 and params[8] == pytest.approx(0.1)
 
 
 def test_calibrate_requires_min_views(tmp_path):
