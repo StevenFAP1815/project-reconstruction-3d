@@ -1,0 +1,5 @@
+config,n_images,n_registered,registered_pct,n_points3d,mean_track_length,mean_reprojection_error_px,mean_observations_per_image,n_models,model_sizes,total_s,ignored_options
+A_base,68,43,63.24,5861,5.026,1.1153,685.1,2,"[43, 25]",206.0,[]
+B_clahe,68,43,63.24,6970,4.776,1.1274,774.2,2,"[43, 25]",253.3,[]
+C_sensible,68,68,100.0,19449,3.638,1.1256,1040.6,1,[68],631.1,[]
+D_calibrada,68,68,100.0,19279,3.753,1.116,1063.9,1,[68],567.8,[]

@@ -1,0 +1,118 @@
+{
+  "object": "caja-carton-leche",
+  "method": "colmap-v2",
+  "created_at": "2026-11-14T04:29:24+00:00",
+  "n_images": 73,
+  "n_registered": 68,
+  "registered_ratio": 0.9315,
+  "runtime_s": 567.8,
+  "seed": 42,
+  "scale_factor": null,
+  "environment": {
+    "python": "3.13.16",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "gpu": "Tesla T4",
+    "code_version": "cb0849f",
+    "packages": {
+      "numpy": "2.4.6",
+      "opencv-python": "5.0.0.93",
+      "opencv-python-headless": "5.0.0.93",
+      "pycolmap-cuda12": "4.2.1",
+      "torch": "2.14.1+cu130"
+    }
+  },
+  "extra": {
+    "best_config": "D_calibrada",
+    "configs": {
+      "A_base": {
+        "image_dir": "/content/work/caja-carton-leche/experiments/images_raw"
+      },
+      "B_clahe": {
+        "image_dir": "/content/work/caja-carton-leche/experiments/images_clahe",
+        "camera_model": "SIMPLE_RADIAL",
+        "camera_params": [
+          2773.5009811261452,
+          1500.0,
+          2000.0,
+          0.0
+        ]
+      },
+      "C_sensible": {
+        "image_dir": "/content/work/caja-carton-leche/experiments/images_clahe",
+        "camera_model": "SIMPLE_RADIAL",
+        "camera_params": [
+          2773.5009811261452,
+          1500.0,
+          2000.0,
+          0.0
+        ],
+        "max_features": 16384,
+        "extraction_options": {
+          "sift.peak_threshold": 0.004
+        },
+        "matching_options": {
+          "guided_matching": true
+        },
+        "mapping_options": {
+          "mapper.abs_pose_min_num_inliers": 15,
+          "mapper.abs_pose_min_inlier_ratio": 0.15
+        }
+      },
+      "D_calibrada": {
+        "image_dir": "/content/work/caja-carton-leche/experiments/images_clahe",
+        "max_features": 16384,
+        "extraction_options": {
+          "sift.peak_threshold": 0.004
+        },
+        "matching_options": {
+          "guided_matching": true
+        },
+        "mapping_options": {
+          "mapper.abs_pose_min_num_inliers": 15,
+          "mapper.abs_pose_min_inlier_ratio": 0.15
+        },
+        "camera_model": "OPENCV",
+        "camera_params": [
+          2851.9263484300686,
+          2851.658373119433,
+          1504.5458521057737,
+          2010.9702914072411,
+          0.18031407974844213,
+          -0.5487775091581145,
+          0.001332837473728151,
+          -0.0003041602734254078
+        ],
+        "refine_intrinsics": false
+      }
+    },
+    "blurry_images": [
+      "IMG_20261113_015649.jpg",
+      "IMG_20261113_015736.jpg",
+      "IMG_20261113_020358.jpg",
+      "IMG_20261113_020405.jpg",
+      "IMG_20261113_020410.jpg"
+    ],
+    "n_images_used": 68,
+    "clahe_clip": 2.0,
+    "calibration": {
+      "model": "OPENCV",
+      "params": [
+        2851.9263484300686,
+        2851.658373119433,
+        1504.5458521057737,
+        2010.9702914072411,
+        0.18031407974844213,
+        -0.5487775091581145,
+        0.001332837473728151,
+        -0.0003041602734254078
+      ],
+      "fix_k3": true
+    },
+    "model_sizes": [
+      68
+    ],
+    "unregistered": [],
+    "sift_original_mean": 997.1,
+    "sift_clahe_mean": 1538.1
+  }
+}
