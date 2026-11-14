@@ -1,18 +1,18 @@
 {
   "object": "calibration",
   "method": "opencv-checkerboard",
-  "created_at": "2026-11-14T00:41:46+00:00",
+  "created_at": "2026-11-14T03:49:09+00:00",
   "n_images": 49,
-  "n_registered": 42,
-  "registered_ratio": 0.8571,
-  "runtime_s": 645.45,
+  "n_registered": 40,
+  "registered_ratio": 0.8163,
+  "runtime_s": 419.69,
   "seed": 42,
   "scale_factor": null,
   "environment": {
     "python": "3.13.18",
     "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
     "gpu": null,
-    "code_version": "9f5d708",
+    "code_version": "cb0849f",
     "packages": {
       "numpy": "2.4.6",
       "opencv-python": "5.0.0.93",
@@ -21,12 +21,19 @@
     }
   },
   "extra": {
-    "rms_px": 0.9964,
+    "rms_px": 0.8077,
     "square_mm": 22.0,
     "pattern_size": [
       9,
       6
     ],
+    "n_detected": 42,
+    "fix_k3": true,
+    "outlier_ratio": 2.0,
+    "auto_excluded": {
+      "IMG_20261113_181502_2.jpg": 2.5652,
+      "IMG_20261113_181529.jpg": 1.589
+    },
     "excluded": []
   }
 }
