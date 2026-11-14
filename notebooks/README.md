@@ -9,6 +9,7 @@ del pipeline.
 | `01_calibration.ipynb` | Calibra la cámara con el tablero: K, distorsión y error RMS (criterio 3). |
 | `02_sfm_colmap.ipynb` | SfM definitivo con la configuración `D_calibrada` (nitidez, CLAHE, SIFT sensible, intrínsecos calibrados), métricas, líneas epipolares y trayectoria (criterios 4 y 5). Un objeto por ejecución (`OBJECT`). |
 | `02b_sfm_experiments.ipynb` | Mide el efecto de cada mejora de SfM (CLAHE, SIFT sensible, intrínsecos calibrados) sobre un objeto y guarda la mejor en `colmap-v2`. |
+| `03_dense_mesh_scale.ipynb` | Reconstrucción densa (MVS), limpieza de la nube, malla de Poisson, escala métrica con error dimensional y exportación `.ply`/`.obj`/`.glb` (criterio 6). Un objeto por ejecución (`OBJECT`). |
 | `runs/` | Copias ejecutadas por objeto (evidencia); ver `runs/README.md`. |
 
 Reglas:
