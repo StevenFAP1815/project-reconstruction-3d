@@ -53,6 +53,9 @@ results/**/*.mtl
 results/**/*.glb
 results/**/*.npz
 results/**/*.splat
+# Modelos COLMAP (binarios) y zips descargados de Drive
+results/**/sparse/
+results/**/*.zip
 
 # ---------- Artefactos de COLMAP y otros métodos ----------
 *.db
