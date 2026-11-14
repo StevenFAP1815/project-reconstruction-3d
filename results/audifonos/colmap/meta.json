@@ -1,0 +1,89 @@
+{
+  "object": "audifonos",
+  "method": "colmap",
+  "created_at": "2026-11-14T06:00:39+00:00",
+  "n_images": 121,
+  "n_registered": 48,
+  "registered_ratio": 0.3967,
+  "runtime_s": 1325.76,
+  "seed": 42,
+  "scale_factor": null,
+  "environment": {
+    "python": "3.13.16",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "gpu": "Tesla T4",
+    "code_version": "4af6802",
+    "packages": {
+      "numpy": "2.4.6",
+      "opencv-python": "5.0.0.93",
+      "opencv-python-headless": "5.0.0.93",
+      "pycolmap-cuda12": "4.2.1",
+      "torch": "2.14.1+cu130"
+    }
+  },
+  "extra": {
+    "max_features": 8192,
+    "blur_ratio": 0.35,
+    "filter_blurry": true,
+    "blurry_images": [
+      "IMG_20261113_125806.jpg",
+      "IMG_20261113_125807_1.jpg",
+      "IMG_20261113_125812.jpg",
+      "IMG_20261113_125814.jpg",
+      "IMG_20261113_125815_1.jpg",
+      "IMG_20261113_125816_1.jpg",
+      "IMG_20261113_125817_1.jpg",
+      "IMG_20261113_125818_1.jpg",
+      "IMG_20261113_125820.jpg",
+      "IMG_20261113_125824_1.jpg",
+      "IMG_20261113_125826.jpg",
+      "IMG_20261113_125828.jpg",
+      "IMG_20261113_125829.jpg",
+      "IMG_20261113_125830_1.jpg",
+      "IMG_20261113_125831_1.jpg",
+      "IMG_20261113_125837.jpg",
+      "IMG_20261113_125838_1.jpg",
+      "IMG_20261113_130237.jpg",
+      "IMG_20261113_130238.jpg",
+      "IMG_20261113_130239.jpg",
+      "IMG_20261113_130239_2.jpg",
+      "IMG_20261113_130240_1.jpg"
+    ],
+    "n_images_used": 99,
+    "n_models": 3,
+    "timings_s": {
+      "extraction_s": 161.7,
+      "matching_s": 90.16,
+      "mapping_s": 383.78,
+      "total_s": 635.63
+    },
+    "stats": {
+      "n_images": 99,
+      "n_registered": 48,
+      "registered_pct": 48.48,
+      "n_points3d": 57820,
+      "mean_track_length": 6.345,
+      "mean_reprojection_error_px": 0.8274,
+      "mean_observations_per_image": 7643.5
+    },
+    "intrinsics": {
+      "f_sfm_px": 2934.5634414051997,
+      "cx_sfm_px": 1500.0,
+      "cy_sfm_px": 2000.0,
+      "k1_sfm": -0.056553207917224596,
+      "fx_cal_px": 2851.9263484300686,
+      "fy_cal_px": 2851.658373119433,
+      "cx_cal_px": 1504.5458521057737,
+      "cy_cal_px": 2010.9702914072411,
+      "k1_cal": 0.18031407974844213
+    },
+    "epipolar_pair": {
+      "images": [
+        "IMG_20261113_125742_1.jpg",
+        "IMG_20261113_125744_1.jpg"
+      ],
+      "n_inliers": 179,
+      "mean_distance_px": 0.2253
+    }
+  }
+}
