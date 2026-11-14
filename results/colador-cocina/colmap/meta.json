@@ -1,0 +1,66 @@
+{
+  "object": "colador-cocina",
+  "method": "colmap",
+  "created_at": "2026-11-14T07:06:06+00:00",
+  "n_images": 86,
+  "n_registered": 8,
+  "registered_ratio": 0.093,
+  "runtime_s": 417.18,
+  "seed": 42,
+  "scale_factor": null,
+  "environment": {
+    "python": "3.13.16",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "gpu": "Tesla T4",
+    "code_version": "4af6802",
+    "packages": {
+      "numpy": "2.4.6",
+      "opencv-python": "5.0.0.93",
+      "opencv-python-headless": "5.0.0.93",
+      "pycolmap-cuda12": "4.2.1",
+      "torch": "2.14.1+cu130"
+    }
+  },
+  "extra": {
+    "max_features": 8192,
+    "blur_ratio": 0.35,
+    "filter_blurry": true,
+    "blurry_images": [],
+    "n_images_used": 86,
+    "n_models": 1,
+    "timings_s": {
+      "extraction_s": 139.94,
+      "matching_s": 2.46,
+      "mapping_s": 1.98,
+      "total_s": 144.38
+    },
+    "stats": {
+      "n_images": 86,
+      "n_registered": 8,
+      "registered_pct": 9.3,
+      "n_points3d": 190,
+      "mean_track_length": 4.521,
+      "mean_reprojection_error_px": 1.142,
+      "mean_observations_per_image": 107.4
+    },
+    "intrinsics": {
+      "f_sfm_px": 3011.306996316116,
+      "cx_sfm_px": 1500.0,
+      "cy_sfm_px": 2000.0,
+      "k1_sfm": 0.007761739781378783,
+      "fx_cal_px": 2851.9263484300686,
+      "fy_cal_px": 2851.658373119433,
+      "cx_cal_px": 1504.5458521057737,
+      "cy_cal_px": 2010.9702914072411,
+      "k1_cal": 0.18031407974844213
+    },
+    "epipolar_pair": {
+      "images": [
+        "IMG_20261113_023417.jpg",
+        "IMG_20261113_023420.jpg"
+      ],
+      "n_inliers": 45,
+      "mean_distance_px": 0.2885
+    }
+  }
+}
