@@ -42,6 +42,11 @@ DETECTION_MAX_SIDE = 2000
 
 _SUBPIX_CRITERIA = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 50, 0.01)
 
+# Suavizado gaussiano (sigma en px) aplicado a la foto completa antes del
+# refinamiento subpíxel, para atenuar el moiré sin desplazar las esquinas.
+# Solo se aplica cuando la foto es mayor que DETECTION_MAX_SIDE.
+REFINE_BLUR_SIGMA = 1.5
+
 
 def board_object_points(
     square_mm: float, pattern_size: tuple[int, int] = DEFAULT_PATTERN
@@ -67,12 +72,21 @@ def focal_px_from_35mm(focal_35mm: float, image_size: tuple[int, int]) -> float:
     return focal_35mm * float(np.hypot(width, height)) / _FULL_FRAME_DIAGONAL_MM
 
 
-def _refine_corners(gray: np.ndarray, corners: np.ndarray, pattern_size: tuple[int, int]) -> np.ndarray:
+def _refine_corners(
+    gray: np.ndarray,
+    corners: np.ndarray,
+    pattern_size: tuple[int, int],
+    blur_sigma: float = 0.0,
+) -> np.ndarray:
     """Ajusta las esquinas con precisión subpíxel sobre la imagen completa.
 
     La ventana de búsqueda se adapta al tamaño de los cuadros en la foto
     (~20 % del lado de un cuadro), para no "saltar" a una esquina vecina.
+    Con `blur_sigma > 0` se suaviza antes la imagen: el suavizado gaussiano es
+    simétrico, así que atenúa el moiré sin mover la posición de las esquinas.
     """
+    if blur_sigma > 0:
+        gray = cv2.GaussianBlur(gray, (0, 0), sigmaX=blur_sigma)
     cols, rows = pattern_size
     grid = corners.reshape(rows, cols, 2)
     spacing = float(np.median(np.linalg.norm(np.diff(grid, axis=1), axis=2)))
@@ -123,7 +137,8 @@ def find_corners(
             # Convención de cv2.resize: el centro del píxel x de la imagen
             # reducida corresponde a (x + 0.5) / escala - 0.5 en la original.
             corners = (corners.reshape(-1, 2) + 0.5) / image_scale - 0.5
-            return _refine_corners(gray, corners, pattern_size).astype(np.float32), label
+            blur = REFINE_BLUR_SIGMA if scale < 1 else 0.0
+            return _refine_corners(gray, corners, pattern_size, blur).astype(np.float32), label
     return None, None
 
 
@@ -195,6 +210,9 @@ class CalibrationResult:
     pattern_size: tuple[int, int]
     square_mm: float
     image_names: list[str]
+    excluded_views: dict[str, float] = field(default_factory=dict)  # nombre -> error (px)
+    fix_k3: bool = False
+    outlier_ratio: float | None = None
 
     def to_dict(self) -> dict:
         k = self.camera_matrix
@@ -203,6 +221,9 @@ class CalibrationResult:
             "pattern_size": list(self.pattern_size),
             "square_mm": self.square_mm,
             "n_views": len(self.image_names),
+            "fix_k3": self.fix_k3,
+            "outlier_ratio": self.outlier_ratio,
+            "excluded_views": {name: round(err, 4) for name, err in self.excluded_views.items()},
             "rms_px": round(self.rms_px, 4),
             "fx": float(k[0, 0]),
             "fy": float(k[1, 1]),
@@ -217,15 +238,38 @@ class CalibrationResult:
         }
 
 
+def _calibrate_once(board, corners_list, image_size, flags):
+    """Una pasada de calibrateCamera más el error RMS de cada vista."""
+    object_points = [board] * len(corners_list)
+    rms, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(
+        object_points, corners_list, image_size, None, None, flags=flags
+    )
+    per_view = []
+    for corners, rvec, tvec in zip(corners_list, rvecs, tvecs):
+        projected, _ = cv2.projectPoints(board, rvec, tvec, camera_matrix, dist_coeffs)
+        diff = projected.reshape(-1, 2) - corners
+        per_view.append(float(np.sqrt(np.mean(np.sum(diff**2, axis=1)))))
+    return float(rms), camera_matrix, dist_coeffs.ravel(), per_view
+
+
 def calibrate(
     detections: Detections,
     square_mm: float,
     pattern_size: tuple[int, int] = DEFAULT_PATTERN,
     min_views: int = 15,
+    fix_k3: bool = True,
+    outlier_ratio: float | None = 2.0,
 ) -> CalibrationResult:
     """Calibra la cámara con las esquinas detectadas.
 
-    `min_views=15` es el mínimo que exige la rúbrica.
+    Args:
+        min_views: mínimo de vistas válidas; 15 es lo que exige la rúbrica.
+        fix_k3: fija k3 = 0. Con poca cobertura de los bordes del encuadre,
+            k1, k2 y k3 tienden a tomar valores grandes que se compensan entre
+            sí (sobreajuste); un modelo con menos parámetros es más estable.
+        outlier_ratio: si no es None, tras una primera calibración se excluyen
+            las vistas cuyo error supera `outlier_ratio` × la mediana y se
+            recalibra una vez (solo si siguen quedando `min_views` vistas).
 
     Raises:
         ValueError: si hay menos vistas válidas que `min_views`.
@@ -238,26 +282,38 @@ def calibrate(
         )
 
     board = board_object_points(square_mm, pattern_size)
-    object_points = [board] * n_views
-    rms, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(
-        object_points, detections.corners, detections.image_size, None, None
+    flags = cv2.CALIB_FIX_K3 if fix_k3 else 0
+    names = [path.name for path in detections.image_paths]
+    corners_list = list(detections.corners)
+
+    rms, camera_matrix, dist_coeffs, per_view = _calibrate_once(
+        board, corners_list, detections.image_size, flags
     )
 
-    per_view = []
-    for corners, rvec, tvec in zip(detections.corners, rvecs, tvecs):
-        projected, _ = cv2.projectPoints(board, rvec, tvec, camera_matrix, dist_coeffs)
-        diff = projected.reshape(-1, 2) - corners
-        per_view.append(float(np.sqrt(np.mean(np.sum(diff**2, axis=1)))))
+    excluded = {}
+    if outlier_ratio is not None:
+        limit = outlier_ratio * float(np.median(per_view))
+        keep = [i for i, err in enumerate(per_view) if err <= limit]
+        if len(keep) < n_views and len(keep) >= min_views:
+            excluded = {names[i]: per_view[i] for i in range(n_views) if i not in keep}
+            names = [names[i] for i in keep]
+            corners_list = [corners_list[i] for i in keep]
+            rms, camera_matrix, dist_coeffs, per_view = _calibrate_once(
+                board, corners_list, detections.image_size, flags
+            )
 
     return CalibrationResult(
         camera_matrix=camera_matrix,
-        dist_coeffs=dist_coeffs.ravel(),
-        rms_px=float(rms),
+        dist_coeffs=dist_coeffs,
+        rms_px=rms,
         per_view_errors_px=per_view,
         image_size=detections.image_size,
         pattern_size=tuple(pattern_size),
         square_mm=square_mm,
-        image_names=[path.name for path in detections.image_paths],
+        image_names=names,
+        excluded_views=excluded,
+        fix_k3=fix_k3,
+        outlier_ratio=outlier_ratio,
     )
 
 

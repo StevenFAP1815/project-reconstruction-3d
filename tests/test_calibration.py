@@ -94,7 +94,8 @@ def test_calibration_recovers_known_camera(tmp_path):
     assert result.camera_matrix[1, 1] == pytest.approx(500, rel=0.02)
     assert result.camera_matrix[0, 2] == pytest.approx(320, abs=10)
     assert result.camera_matrix[1, 2] == pytest.approx(240, abs=10)
-    assert len(result.per_view_errors_px) == len(detections.corners)
+    assert len(result.per_view_errors_px) + len(result.excluded_views) == len(detections.corners)
+    assert result.dist_coeffs[4] == 0.0  # k3 fijo por defecto
 
     saved = save_calibration(result, tmp_path / "calib" / "calibration.json")
     k, dist, size = load_calibration(saved)
@@ -121,6 +122,30 @@ def test_find_corners_on_reduced_image_maps_back_to_full_resolution(tmp_path):
 def test_detect_corners_records_method(tmp_path):
     detections = detect_corners(_render_views(tmp_path, n_views=2), PATTERN)
     assert len(detections.methods) == len(detections.corners)
+
+
+def test_calibrate_excludes_outlier_view(tmp_path):
+    detections = detect_corners(_render_views(tmp_path, n_views=12), PATTERN)
+    # Se estropea una vista con ruido de 3 px, como una foto movida.
+    noisy = 0
+    rng = np.random.default_rng(1)
+    detections.corners[noisy] = detections.corners[noisy] + rng.normal(0, 3, detections.corners[noisy].shape).astype(np.float32)
+    noisy_name = detections.image_paths[noisy].name
+
+    without = calibrate(detections, SQUARE_MM, PATTERN, min_views=10, outlier_ratio=None)
+    with_exclusion = calibrate(detections, SQUARE_MM, PATTERN, min_views=10, outlier_ratio=2.0)
+
+    assert noisy_name in with_exclusion.excluded_views
+    assert noisy_name not in with_exclusion.image_names
+    assert with_exclusion.rms_px < without.rms_px
+    assert with_exclusion.to_dict()["excluded_views"].keys() == with_exclusion.excluded_views.keys()
+
+
+def test_calibrate_can_estimate_k3(tmp_path):
+    detections = detect_corners(_render_views(tmp_path, n_views=12), PATTERN)
+    result = calibrate(detections, SQUARE_MM, PATTERN, min_views=10, fix_k3=False, outlier_ratio=None)
+    assert result.fix_k3 is False
+    assert result.camera_matrix[0, 0] == pytest.approx(500, rel=0.02)
 
 
 def test_calibrate_requires_min_views(tmp_path):
