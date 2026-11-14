@@ -6,7 +6,8 @@ Reconstrucción 3D de cinco objetos reales a partir de fotografías 2D propias, 
 **escala métrica verificada**, comparando un pipeline clásico (SfM + MVS) con al
 menos un enfoque basado en IA (VGGT, DUSt3R/MASt3R, 3D Gaussian Splatting o NeRF).
 
-> 🚧 Proyecto en desarrollo. Este README se irá completando en cada etapa.
+> Proyecto en desarrollo. Este README se completa en cada etapa. El problema,
+> la aplicación y los objetivos están en `docs/problem-objectives.md`.
 
 ## Pipeline
 
