@@ -19,6 +19,24 @@ def epipolar_distances(points1: np.ndarray, points2: np.ndarray, fundamental: np
     return numerator / np.hypot(lines[:, 0], lines[:, 1])
 
 
+def viewing_angle_steps(directions: np.ndarray) -> np.ndarray:
+    """Ángulo (grados) entre las direcciones de mirada de fotos consecutivas."""
+    d = np.asarray(directions, dtype=float)
+    d = d / np.linalg.norm(d, axis=1, keepdims=True)
+    cosines = np.clip(np.sum(d[1:] * d[:-1], axis=1), -1.0, 1.0)
+    return np.degrees(np.arccos(cosines))
+
+
+def overlap_from_step(step_deg: np.ndarray | float, fov_deg: float) -> np.ndarray | float:
+    """Solapamiento aproximado entre dos fotos que giran `step_deg` grados.
+
+    Al girar alrededor del objeto mirando a su centro, la parte compartida del
+    campo de visión es aproximadamente 1 - giro / campo de visión. Es una
+    estimación geométrica sencilla (ignora la distancia y la forma del objeto).
+    """
+    return np.clip(1.0 - np.asarray(step_deg, dtype=float) / fov_deg, 0.0, 1.0)
+
+
 def trajectory_frame(centers: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """Expresa los centros de cámara en un sistema "horizontal + vertical".
 

@@ -1,0 +1,6 @@
+object,method,n_cameras,height_min,height_max,elevation_deg_median,step_deg_median,overlap_pct_median,hfov_deg
+caja-carton-leche,colmap-v2,68,-0.52,0.56,6.0,7.66,86.2,55.5
+canasto-flores,colmap,40,-0.19,0.27,3.0,7.83,85.9,55.5
+vaso-vidrio,colmap,4,0.89,0.9,63.8,6.29,88.7,55.5
+audifonos,colmap,48,0.76,0.98,60.9,3.0,94.6,55.5
+colador-cocina,colmap,8,0.51,0.54,31.1,4.21,92.4,55.5

@@ -70,15 +70,54 @@ ajustó antes de disparar.
 |---|---|
 | Lugar | Interior |
 | Fondo y superficie de apoyo | Fondo negro; el objeto se apoya en un banquito cubierto también de negro |
-| Trayectoria | 2–3 órbitas completas alrededor del objeto, a distintas alturas según el objeto |
+| Trayectoria | 2–3 órbitas completas alrededor del objeto, a distintas alturas según el objeto (planificado; ver la trayectoria real más abajo) |
 | Solapamiento | Cada punto del objeto aparece en unas 4–5 fotos consecutivas, lo que equivale a un solapamiento estimado del 75–80 % entre vistas consecutivas |
-| Diagrama de la trayectoria | Se generará a partir de las posiciones de cámara estimadas por SfM (notebook de SfM), que muestran la trayectoria real de cada captura |
+| Diagrama de la trayectoria | `docs/figures/trajectory_<objeto>.png`, generado a partir de las posiciones de cámara estimadas por SfM (ver "Trayectoria real") |
 
 El solapamiento se estima así: si un punto aparece en N fotos seguidas, cada
 foto comparte con la siguiente aproximadamente (N − 1) / N de su contenido;
 con N = 4–5 resulta 75–80 %, dentro del rango de 60–80 % que pide la rúbrica.
 El valor real se comprobará con la longitud media de *track* que reporta SfM
 (número medio de fotos en que aparece cada punto 3D).
+
+### Trayectoria real y solapamiento medido
+
+Los diagramas se generan con `python scripts/trajectory_figures.py` a partir de
+las cámaras registradas por SfM (`results/<objeto>/<metodo>/poses.npz`). Cada
+figura muestra la planta (vista desde arriba, con la dirección en la que mira
+cada cámara) y una vista lateral (distancia al eje frente a altura). Las
+distancias están normalizadas por la distancia mediana cámara-objeto, porque
+SfM no tiene escala. Solo aparecen las fotos que SfM consiguió registrar.
+
+El solapamiento se midió de dos formas:
+
+- **Por el giro entre fotos consecutivas:** si la cámara gira θ grados alrededor
+  del objeto y su campo de visión horizontal es de 55,5° (calibración:
+  2 · arctan(1500 / 2852)), las dos fotos comparten aproximadamente
+  1 − θ / 55,5 del campo de visión.
+- **Por la longitud media de *track*** de SfM, con la fórmula (N − 1) / N.
+
+| Objeto | Cámaras registradas | Giro mediano entre fotos | Solapamiento por giro | Track medio | Solapamiento por track | Elevación mediana |
+|---|---|---|---|---|---|---|
+| Caja (`colmap-v2`) | 68 | 7,7° | 86 % | 3,75 | 73 % | 6° |
+| Canasto | 40 | 7,8° | 86 % | 4,26 | 77 % | 3° |
+| Audífonos | 48 | 3,0° | 95 % | 6,35 | 84 % | 61° |
+| Colador | 8 | 4,2° | 92 % | 4,52 | 78 % | 31° |
+| Vaso | 4 | 6,3° | 89 % | 2,27 | 56 % | 64° |
+
+- Las dos estimaciones sitúan el solapamiento entre fotos consecutivas en el
+  rango de la rúbrica (60–80 %) o por encima. Un solapamiento mayor no
+  perjudica a SfM: solo añade fotos redundantes.
+- En la caja, la vista lateral muestra **dos niveles de altura** (uno bajo,
+  hacia la base del objeto, y otro por encima de su centro), que corresponden a
+  dos órbitas, y la planta muestra la vuelta completa.
+- En el resto de objetos solo se registró una parte de la captura, así que el
+  diagrama muestra un arco y no las órbitas completas. Los audífonos se
+  fotografiaron desde arriba (elevación de 61°), lo que concuerda con que la
+  superficie de apoyo domine su nube dispersa.
+- El vaso tiene el track medio más corto (2,27): sus puntos casi no se repiten
+  entre fotos, la misma causa por la que SfM no lo reconstruye
+  (`docs/sfm-results.md`).
 
 ## 4. Escala métrica
 
