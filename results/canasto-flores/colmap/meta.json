@@ -1,0 +1,73 @@
+{
+  "object": "canasto-flores",
+  "method": "colmap",
+  "created_at": "2026-11-14T05:32:09+00:00",
+  "n_images": 93,
+  "n_registered": 40,
+  "registered_ratio": 0.4301,
+  "runtime_s": 756.26,
+  "seed": 42,
+  "scale_factor": null,
+  "environment": {
+    "python": "3.13.16",
+    "platform": "Linux-6.6.159+-x86_64-with-glibc2.39",
+    "gpu": "Tesla T4",
+    "code_version": "4af6802",
+    "packages": {
+      "numpy": "2.4.6",
+      "opencv-python": "5.0.0.93",
+      "opencv-python-headless": "5.0.0.93",
+      "pycolmap-cuda12": "4.2.1",
+      "torch": "2.14.1+cu130"
+    }
+  },
+  "extra": {
+    "max_features": 8192,
+    "blur_ratio": 0.35,
+    "filter_blurry": true,
+    "blurry_images": [
+      "IMG_20261113_021140.jpg",
+      "IMG_20261113_021208.jpg",
+      "IMG_20261113_021229.jpg",
+      "IMG_20261113_021233.jpg",
+      "IMG_20261113_021235.jpg",
+      "IMG_20261113_021309.jpg"
+    ],
+    "n_images_used": 87,
+    "n_models": 3,
+    "timings_s": {
+      "extraction_s": 139.34,
+      "matching_s": 419.05,
+      "mapping_s": 79.33,
+      "total_s": 637.72
+    },
+    "stats": {
+      "n_images": 87,
+      "n_registered": 40,
+      "registered_pct": 45.98,
+      "n_points3d": 3284,
+      "mean_track_length": 4.261,
+      "mean_reprojection_error_px": 1.2194,
+      "mean_observations_per_image": 349.8
+    },
+    "intrinsics": {
+      "f_sfm_px": 2920.3712258358696,
+      "cx_sfm_px": 1500.0,
+      "cy_sfm_px": 2000.0,
+      "k1_sfm": 0.02514578169236949,
+      "fx_cal_px": 2851.9263484300686,
+      "fy_cal_px": 2851.658373119433,
+      "cx_cal_px": 1504.5458521057737,
+      "cy_cal_px": 2010.9702914072411,
+      "k1_cal": 0.18031407974844213
+    },
+    "epipolar_pair": {
+      "images": [
+        "IMG_20261113_020857.jpg",
+        "IMG_20261113_020900_1.jpg"
+      ],
+      "n_inliers": 168,
+      "mean_distance_px": 0.465
+    }
+  }
+}
