@@ -6,15 +6,32 @@ Reconstrucción 3D de cinco objetos reales a partir de fotografías 2D propias, 
 **escala métrica verificada**, comparando un pipeline clásico (SfM + MVS) con al
 menos un enfoque basado en IA (VGGT, DUSt3R/MASt3R, 3D Gaussian Splatting o NeRF).
 
-> Proyecto en desarrollo. Este README se completa en cada etapa. El problema,
-> la aplicación y los objetivos están en `docs/problem-objectives.md`.
+El problema, la aplicación y los objetivos están en
+`docs/problem-objectives.md`; las conclusiones, en `docs/conclusions.md`.
 
 ## Pipeline
 
 ```
 captura → calibración → preprocesamiento → SfM (poses + nube dispersa)
-        → reconstrucción densa (MVS) → malla → escala métrica y evaluación
+        → reconstrucción densa → malla → escala métrica y evaluación
 ```
+
+La reconstrucción densa se obtuvo con VGGT. La etapa densa de COLMAP (MVS)
+está implementada en `03`, pero no se ejecutó: en la caja tardó más de 40 min
+sin concluir (`docs/dense-reconstruction.md`).
+
+## Resultados
+
+| Objeto | SfM: fotos registradas | VGGT: error medio de la malla | Cobertura |
+|---|---|---|---|
+| Caja de cartón | 100 % (`D_calibrada`) · 63 % (base) | 5,5 % | 100 % |
+| Canasto con flores | 46 % | 6,7 % | 100 % |
+| Vaso de vidrio | 5 % | 4,5 % | 100 % |
+| Audífonos | 48 % | 18,1 % | 100 % |
+| Colador de cocina | 9 % | 5,8 % | 100 % |
+
+Detalle en `docs/sfm-results.md`, `docs/vggt-results.md` y
+`docs/master-table.md`. Las mallas se ven en el visor de `viewer/`.
 
 ## Estructura del repositorio
 
@@ -22,8 +39,9 @@ captura → calibración → preprocesamiento → SfM (poses + nube dispersa)
 data/           # fotografías por objeto (no se versiona)
 src/recon3d/    # código reutilizable (paquete Python)
 tests/          # tests automatizados (pytest)
-scripts/        # utilidades de línea de comandos (p. ej. crear zips de fotos)
+scripts/        # utilidades de línea de comandos (zips, medición, mallas, tabla)
 notebooks/      # experimentos por etapa/método
+viewer/         # visor web de las mallas para la demostración
 results/        # salidas por objeto y método (solo meta.json en Git)
 docs/           # informe y figuras livianas
 requirements-dev.txt   # entorno local y CI (tests)
@@ -44,6 +62,22 @@ pytest
 Los tests viven en `tests/` y usan carpetas temporales, no las fotos de `data/`.
 GitHub Actions los ejecuta automáticamente en cada Pull Request
 (`.github/workflows/tests.yml`).
+
+## Parte local: medición, mallas y visor (sin GPU)
+
+A partir de las nubes de VGGT descargadas de Drive
+(`results/<objeto>/vggt/object_clean_mm.ply`), el resto se ejecuta en CPU:
+
+```powershell
+pip install matplotlib pycolmap==4.2.1        # además de requirements-dev.txt
+python scripts/remeasure_vggt.py              # quita el apoyo y vuelve a medir
+python scripts/make_vggt_meshes.py            # mallas de Poisson .ply/.obj/.glb
+python scripts/build_master_table.py          # tabla maestra
+python -m http.server 8000                    # visor: http://localhost:8000/viewer/
+```
+
+`pycolmap` de PyPI es la versión para CPU; basta, porque Poisson y la
+simplificación de mallas no usan la GPU.
 
 ## Objetos
 

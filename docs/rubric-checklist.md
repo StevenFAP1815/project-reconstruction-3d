@@ -11,11 +11,11 @@ Estados: `pendiente` · `en curso` · `listo`.
 | Entregable | Estado |
 |---|---|
 | Problema y objetivos | listo (`docs/problem-objectives.md`) |
-| 5 objetos elegidos y justificados | en curso (tabla O1-O5 en README) |
+| 5 objetos elegidos y justificados | listo (`docs/problem-objectives.md`, tabla O1-O5 con la dificultad anticipada) |
 | Calibración terminada | listo (`results/calibration/`, RMS 0,81 px) |
 | Dataset de al menos 2 objetos capturado | listo (5 objetos) |
 | SfM disperso de al menos 1 objeto | listo (5 objetos, `docs/sfm-results.md`) |
-| Plan de evaluación (métricas y medidas físicas) | en curso (medidas y estrategia de escala en `docs/capture-protocol.md`) |
+| Plan de evaluación (métricas y medidas físicas) | listo (criterios de éxito en `docs/problem-objectives.md`; medidas y escala en `docs/capture-protocol.md`; métricas en `docs/master-table.md`) |
 
 ## Criterios (100 pts)
 
@@ -31,7 +31,7 @@ Estados: `pendiente` · `en curso` · `listo`.
 | 8 | Evaluación y discusión | 14 | Tabla maestra objeto × método; error dimensional (≤ 2 %); figuras de los 5 modelos; análisis de fallos con causas verificadas | en curso (tabla maestra automática en `docs/master-table.md`; análisis de SfM y VGGT en `docs/sfm-results.md` y `docs/vggt-results.md`; ningún error medio ≤ 2 %) |
 | 9 | Reproducibilidad, ética y viabilidad | 6 | Notebook de inicio a fin; versiones fijadas; semillas; `results/` y `meta.json` por corrida; costo computacional; licencias; ética | en curso (`docs/reproducibility-ethics.md`, con los costos de MVS y VGGT) |
 | 10 | Conclusiones | 4 | Responder a cada objetivo; qué método conviene para cada tipo de objeto | listo (`docs/conclusions.md`) |
-| 11 | Exposición y demostración | 8 | Demostración en vivo de los 5 modelos en un visor 3D | en curso (visor listo en `viewer/`; falta ensayar la exposición) |
+| 11 | Exposición y demostración | 8 | Demostración en vivo de los 5 modelos en un visor 3D | listo (visor en `viewer/`, probado con los 5 modelos; falta ensayar la exposición) |
 
 ## Condiciones para todos los objetos
 
