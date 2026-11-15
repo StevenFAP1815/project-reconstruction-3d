@@ -78,6 +78,55 @@
     ],
     "mean_abs_error_pct": 6.72,
     "angular_coverage_pct": 100.0,
-    "original_mean_abs_error_pct": 64.85
+    "original_mean_abs_error_pct": 64.85,
+    "mesh": {
+      "source": "object_mm.ply",
+      "voxel_mm": 0.824,
+      "n_points_meshed": 182790,
+      "normal_neighbors": 20,
+      "poisson_options": {
+        "depth": 10,
+        "trim": 7
+      },
+      "crop_margin": 0.03,
+      "n_faces_poisson": 1090843,
+      "simplification": {
+        "method": "QEM (pycolmap.simplify_mesh)",
+        "target_faces": 200000
+      },
+      "n_vertices": 96407,
+      "n_faces": 200000,
+      "poisson_s": 14.4,
+      "total_s": 34.3,
+      "measurements": [
+        {
+          "name": "largo_total",
+          "real_mm": 206,
+          "mesh_mm": 205.7,
+          "error_pct": -0.15,
+          "role": "escala"
+        },
+        {
+          "name": "diametro_aro",
+          "real_mm": 91,
+          "mesh_mm": 92.94,
+          "error_pct": 2.13,
+          "role": "evaluación"
+        },
+        {
+          "name": "profundidad_malla",
+          "real_mm": 45,
+          "mesh_mm": 49.28,
+          "error_pct": 9.51,
+          "role": "evaluación"
+        }
+      ],
+      "mean_abs_error_pct": 5.82,
+      "files": [
+        "mesh_mm.ply",
+        "mesh_mm.obj",
+        "mesh.glb"
+      ]
+    }
   }
 }

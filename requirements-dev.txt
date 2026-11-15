@@ -7,3 +7,6 @@ pytest==8.3.3
 # En Colab no se instalan: ya vienen numpy y opencv-python.
 numpy==2.2.6
 opencv-python-headless==4.11.0.86
+
+# recon3d.meshing (normales orientadas para mallar las nubes de VGGT).
+scipy==1.18.1

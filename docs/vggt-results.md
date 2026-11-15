@@ -92,6 +92,52 @@ que no concluyó en más de 40 minutos (`docs/dense-reconstruction.md`). A cambi
 necesita unos 13 GB de memoria de GPU, casi toda la T4, y por eso solo acepta
 60 fotos a 518 px.
 
+## Mallas
+
+Con `scripts/make_vggt_meshes.py`, en local y sin GPU, se generó una malla por
+objeto a partir de la nube sin apoyo (`docs/figures/vggt_mesh_<objeto>.png`):
+
+1. **Reducción** con una rejilla de vóxeles de 0,4 % de la mayor dimensión
+   (≈ 0,8 mm en la caja), para tener una densidad uniforme.
+2. **Normales.** Las nubes de VGGT no las traen, y Poisson las necesita. Se
+   estiman con PCA de los 20 vecinos de cada punto y se orientan de forma
+   coherente con el método de Hoppe (árbol de expansión mínima del grafo de
+   vecinos), que funciona también con asas y mangos, donde la regla "hacia
+   fuera del eje" fallaría (`recon3d/meshing.py`, con tests en
+   `tests/test_meshing.py`).
+3. **Poisson** con la misma función y los mismos parámetros que `03`
+   (`depth = 10`, `trim = 7`) y recorte de la superficie inventada fuera de la
+   caja del objeto.
+4. **Simplificación** QEM (*quadric error metric*) a 200 000 triángulos: Poisson
+   producía entre 0,7 y 3,5 millones (13–67 MB en `.glb`), demasiado para un
+   visor web. La simplificación fusiona primero las aristas que menos deforman
+   la superficie. En la caja, el error de la malla es el mismo con 1,9 millones
+   de triángulos que con 200 000 (5,5 %).
+5. **Exportación** en mm (`mesh_mm.ply`, `mesh_mm.obj`) y en metros (`mesh.glb`,
+   unos 3,8 MB, como exige glTF), con el color de la nube en cada vértice.
+
+Las medidas de la malla se toman sobre 200 000 puntos muestreados en su
+superficie, con la escala de la nube (la malla no se vuelve a escalar):
+
+| Objeto | Triángulos de Poisson | Poisson (s) | Medidas de evaluación (malla / real) | Error medio malla | Error medio nube |
+|---|---|---|---|---|---|
+| Caja | 1 866 335 | 28,8 | Ancho 94,3 / 93 (+1,4 %) · Fondo 63,6 / 58 (+9,6 %) | 5,5 % | 6,9 % |
+| Canasto | 3 538 830 | 50,9 | Alto 189,9 / 202 (−6,0 %) · Flores 222,2 / 240 (−7,4 %) | 6,7 % | 4,5 % |
+| Vaso | 1 865 430 | 26,9 | Boca 80,2 / 79 (+1,5 %) · Base 77,4 / 72 (+7,4 %) | 4,5 % | 11,6 % |
+| Audífonos | 686 735 | 11,2 | Alto 36,2 / 43 (−15,8 %) · Fondo 24,1 / 20 (+20,4 %) | 18,1 % | 23,1 % |
+| Colador | 1 090 841 | 14,4 | Aro 92,9 / 91 (+2,1 %) · Profundidad 49,3 / 45 (+9,5 %) | 5,8 % | 6,7 % |
+
+- La malla mejora el error en cuatro objetos. La explicación probable es que
+  Poisson ajusta una superficie suave que promedia el ruido de los puntos
+  sueltos, que en la nube alargan las medidas. En el vaso, la base pasa de +20,6 % a +7,4 %.
+- En el canasto empeora. Poisson une flores y canasto en una superficie
+  continua, y el diámetro medido en la franja baja sale un 13,9 % mayor que en
+  la nube: la superficie rellena los huecos entre las flores que cuelgan y el
+  canasto.
+- En el colador y los audífonos queda un borde oscuro en la base: restos del
+  apoyo que la limpieza conservó como "base del objeto". En las otras tres
+  mallas no se aprecia.
+
 ## Corrección de las medidas: la superficie de apoyo
 
 ### El problema
@@ -169,7 +215,10 @@ todas las medidas se desvían en la misma proporción.
 - Ejecuciones: `notebooks/runs/04_ai_vggt_<objeto>.ipynb`.
 - Corrida original: `results/<objeto>/vggt/` (`meta.json`, `measurements.csv`,
   `cleaning.csv`). Se conserva sin cambios.
-- Medidas corregidas: `results/<objeto>/vggt-nosupport/` (`meta.json`,
-  `measurements.csv`) y figuras en `docs/figures/vggt_nosupport_<objeto>.png`.
-- Las nubes (`object_clean_mm.ply`, `object_mm.ply`) y las cámaras
-  (`cameras.npz`) quedan en Drive y en local, fuera de Git.
+- Medidas corregidas: `results/<objeto>/vggt-nosupport/` (`meta.json`, con las
+  medidas de la malla en `extra.mesh`, y `measurements.csv`). Figuras en
+  `docs/figures/vggt_nosupport_<objeto>.png` y `vggt_mesh_<objeto>.png`.
+- Las nubes (`object_clean_mm.ply`, `object_mm.ply`), las mallas
+  (`mesh_mm.ply`, `mesh_mm.obj`, `mesh.glb`) y las cámaras (`cameras.npz`)
+  quedan en local, fuera de Git por su tamaño. Se regeneran con
+  `scripts/remeasure_vggt.py` y `scripts/make_vggt_meshes.py`.

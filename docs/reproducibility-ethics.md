@@ -35,7 +35,8 @@ en `notebooks/runs/` como evidencia.
 | pycolmap (COLMAP con CUDA) | `pycolmap-cuda12` 4.2.1 | `requirements-colab.txt` |
 | VGGT | commit `a288dd0` del repositorio oficial | Instalación fijada en `04_ai_vggt.ipynb` |
 | numpy, OpenCV, torch | 2.4.6, 5.0.0.93, 2.14.1 | Las trae Colab; no se reinstalan para no romper el entorno y quedan registradas en cada `meta.json` |
-| Tests (local y CI) | Python 3.13, pytest 8.3.3, numpy 2.2.6, OpenCV 4.11.0.86 | `requirements-dev.txt` |
+| Tests (local y CI) | Python 3.13, pytest 8.3.3, numpy 2.2.6, OpenCV 4.11.0.86, scipy 1.18.1 | `requirements-dev.txt` |
+| Scripts locales de medición y mallado | Además: matplotlib 3.11.2 y `pycolmap` 4.2.1 (versión CPU) | Instalados en `.venv`; Poisson y la simplificación de COLMAP no usan GPU |
 
 ### Semillas y determinismo
 
@@ -77,6 +78,7 @@ Todas las corridas se ejecutaron en Google Colab con una GPU NVIDIA Tesla T4
 | VGGT (60 fotos) | Colador | 60 | 4,8 min (92 s de inferencia) |
 | VGGT (60 fotos) | Vaso | 60 | 4,5 min (93 s de inferencia) |
 | Nueva medición de VGGT sin apoyo (`scripts/remeasure_vggt.py`) | Cada objeto | — | 5–8 s (CPU local) |
+| Malla de Poisson + simplificación (`scripts/make_vggt_meshes.py`) | Cada objeto | — | 25–121 s (CPU local; Poisson 11–51 s) |
 
 - El tiempo de SfM crece con el número de fotos, porque el emparejamiento
   exhaustivo compara todos los pares: con n fotos hay n(n − 1)/2 pares (2278

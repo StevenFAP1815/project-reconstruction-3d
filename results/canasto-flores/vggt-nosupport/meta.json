@@ -78,6 +78,55 @@
     ],
     "mean_abs_error_pct": 4.49,
     "angular_coverage_pct": 100.0,
-    "original_mean_abs_error_pct": 21.29
+    "original_mean_abs_error_pct": 21.29,
+    "mesh": {
+      "source": "object_mm.ply",
+      "voxel_mm": 0.908,
+      "n_points_meshed": 733278,
+      "normal_neighbors": 20,
+      "poisson_options": {
+        "depth": 10,
+        "trim": 7
+      },
+      "crop_margin": 0.03,
+      "n_faces_poisson": 3538831,
+      "simplification": {
+        "method": "QEM (pycolmap.simplify_mesh)",
+        "target_faces": 200000
+      },
+      "n_vertices": 91029,
+      "n_faces": 200000,
+      "poisson_s": 50.9,
+      "total_s": 121.2,
+      "measurements": [
+        {
+          "name": "diametro_canasto",
+          "real_mm": 150,
+          "mesh_mm": 170.85,
+          "error_pct": 13.9,
+          "role": "escala"
+        },
+        {
+          "name": "alto_total",
+          "real_mm": 202,
+          "mesh_mm": 189.91,
+          "error_pct": -5.98,
+          "role": "evaluación"
+        },
+        {
+          "name": "ancho_flores",
+          "real_mm": 240,
+          "mesh_mm": 222.24,
+          "error_pct": -7.4,
+          "role": "evaluación"
+        }
+      ],
+      "mean_abs_error_pct": 6.69,
+      "files": [
+        "mesh_mm.ply",
+        "mesh_mm.obj",
+        "mesh.glb"
+      ]
+    }
   }
 }

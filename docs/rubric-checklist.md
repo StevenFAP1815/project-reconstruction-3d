@@ -26,7 +26,7 @@ Estados: `pendiente` · `en curso` · `listo`.
 | 3 | Calibración | 8 | Tablero o ChArUco con ≥ 15 vistas; K, distorsión, RMS ≤ 0,5 px; modelo pinhole; comparar con intrínsecos de SfM | listo (42 vistas, RMS 0,81 px justificado por moiré; comparación en `docs/sfm-results.md`) |
 | 4 | Preprocesamiento | 6 | Filtro de borrosas cuantitativo (varianza del Laplaciano); corrección de distorsión; máscaras; **medir el efecto** de cada paso | listo (`docs/preprocessing.md`: borrosas y CLAHE medidos; distorsión en `03`; máscaras no usadas, con justificación) |
 | 5 | SfM y geometría epipolar | 14 | SIFT, RANSAC, F/E, registro incremental, triangulación, BA; por objeto: % registradas (≥ 90 %), n.º de puntos, longitud media de track, error de reproyección (< 1 px); líneas epipolares en un par | listo (5 objetos; ≥ 90 % solo en la caja con `D_calibrada`; ver `docs/sfm-results.md`) |
-| 6 | Densa, malla y escala | 12 | MVS; limpieza de outliers; malla Poisson o ball pivoting; escala en mm; exportar .ply/.obj/.glb; justificar parámetros | en curso (`03` implementado pero no ejecutado: MVS de la caja > 40 min sin concluir, ver `docs/dense-reconstruction.md`; nube densa escalada de los 5 objetos con VGGT) |
+| 6 | Densa, malla y escala | 12 | MVS; limpieza de outliers; malla Poisson o ball pivoting; escala en mm; exportar .ply/.obj/.glb; justificar parámetros | en curso (MVS no ejecutado: la caja > 40 min sin concluir, `docs/dense-reconstruction.md`. Nube densa de VGGT limpia, malla de Poisson, escala en mm y exportación .ply/.obj/.glb de los 5 objetos, `docs/vggt-results.md`) |
 | 7 | Comparación con IA | 10 | Mismo objeto y mismas imágenes; explicar el principio del método; comparar precisión, completitud, tiempo y memoria | listo (5 objetos, medidas corregidas sin la superficie de apoyo, `docs/vggt-results.md`) |
 | 8 | Evaluación y discusión | 14 | Tabla maestra objeto × método; error dimensional (≤ 2 %); figuras de los 5 modelos; análisis de fallos con causas verificadas | en curso (tabla maestra automática en `docs/master-table.md`; análisis de SfM y VGGT en `docs/sfm-results.md` y `docs/vggt-results.md`; ningún error medio ≤ 2 %) |
 | 9 | Reproducibilidad, ética y viabilidad | 6 | Notebook de inicio a fin; versiones fijadas; semillas; `results/` y `meta.json` por corrida; costo computacional; licencias; ética | en curso (`docs/reproducibility-ethics.md`, con los costos de MVS y VGGT) |
@@ -52,7 +52,7 @@ forma proporcional.
 | ≥ 3 medidas físicas registradas | sí | sí (4) | sí | sí | sí |
 | SfM: poses + nube dispersa (≥ 90 % registradas) | 100 % (`D`), 63 % (base) | 46 % | 5 % | 48 % | 9 % |
 | Nube densa limpia | VGGT, sin apoyo (MVS no ejecutado) | VGGT, sin apoyo | VGGT, sin apoyo | VGGT, sin apoyo | VGGT, sin apoyo |
-| Malla exportada y escalada (mm) | no | no | no | no | no |
+| Malla exportada y escalada (mm) | sí (VGGT + Poisson), 5,5 % | sí, 6,7 % | sí, 4,5 % | sí, 18,1 % | sí, 5,8 % |
 | Reconstrucción con método de IA | sí, 100 % de cobertura | sí, 100 % | sí, 100 % | sí, 100 % | sí, 100 % |
 | Error dimensional medio (%) | 6,9 | 4,5 | 11,6 | 23,1 | 6,7 |
 | `results/` y `meta.json` completos | | | | | |

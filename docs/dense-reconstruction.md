@@ -63,6 +63,12 @@ densa del proyecto, la de VGGT:
 - Las nubes densas de VGGT de los cinco objetos se limpiaron de la superficie de
   apoyo y se volvieron a medir en local, sin GPU (`docs/vggt-results.md`). El
   error medio bajó de 21–143 % a 4,5–23 %.
+- A partir de esas nubes se generaron las mallas de Poisson con la misma función
+  y los mismos parámetros que `03` (`recon3d.dense.poisson_mesh`, `depth = 10`,
+  `trim = 7`), que corre en CPU. Se exportaron en `.ply`, `.obj` y `.glb`,
+  escaladas en mm, en 20–70 s por objeto. Así la etapa de malla, escala y
+  exportación de `03` se cumple para los cinco objetos; lo que cambia es el
+  origen de la nube densa (VGGT en lugar de PatchMatch).
 - La comparación entre métodos se apoya en lo que sí se midió en ambos: fotos
   registradas, cobertura, coherencia de la focal con la calibración, tiempo y
   memoria (`docs/master-table.md`).
