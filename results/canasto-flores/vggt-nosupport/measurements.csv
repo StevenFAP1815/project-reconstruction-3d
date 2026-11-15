@@ -1,0 +1,4 @@
+name,real_mm,model_mm,error_mm,error_pct,role
+diametro_canasto,150,150.0,0.0,0.0,escala
+alto_total,202,194.88,-7.12,-3.52,evaluación
+ancho_flores,240,226.92,-13.08,-5.45,evaluación

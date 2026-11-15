@@ -13,6 +13,23 @@ del pipeline.
 | `04_ai_vggt.ipynb` | Método de IA (VGGT): cámaras, profundidad y nube 3D predichas por una red, con la misma limpieza, escala y error dimensional que `03`, más tiempo y memoria de GPU (criterio 7). Un objeto por ejecución (`OBJECT`). |
 | `runs/` | Copias ejecutadas por objeto (evidencia); ver `runs/README.md`. |
 
+## Qué SfM usa cada objeto en `03`
+
+Las ejecuciones guardadas en `runs/02_sfm_<objeto>.ipynb` se hicieron con la
+configuración base (`A_base`, commit `4af6802`). `03` elige la entrada con la
+variable `SPARSE_METHOD`. `04` (VGGT) no usa SfM: predice sus propias cámaras.
+
+`03` no se llegó a ejecutar: la etapa densa de la caja no concluyó en más de
+40 minutos (`docs/dense-reconstruction.md`). La tabla indica la entrada prevista.
+
+| Objeto | Entrada | Motivo |
+|---|---|---|
+| Caja de cartón | `colmap-v2` | `D_calibrada` registra las 68 fotos en un modelo y conserva la forma. |
+| Canasto con flores | `colmap` | `D_calibrada` aceptó más puntos pero deformó el objeto. |
+| Audífonos | `colmap` | Mismo caso que el canasto. |
+| Colador de cocina | `colmap` | `02b` descartado por su tiempo de ejecución; el límite es el material. |
+| Vaso de vidrio | `colmap` | Mismo caso que el colador. |
+
 Reglas:
 
 - La lógica reutilizable va en `src/recon3d/`; el notebook solo la llama y

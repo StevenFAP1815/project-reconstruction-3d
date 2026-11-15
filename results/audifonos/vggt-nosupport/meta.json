@@ -1,0 +1,132 @@
+{
+  "object": "audifonos",
+  "method": "vggt-nosupport",
+  "created_at": "2026-11-15T03:16:32+00:00",
+  "n_images": 121,
+  "n_registered": 60,
+  "registered_ratio": 0.4959,
+  "runtime_s": 277.91,
+  "seed": 42,
+  "scale_factor": 146.44136976818515,
+  "environment": {
+    "python": "3.13.2",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "gpu": null,
+    "code_version": "466f129",
+    "packages": {
+      "numpy": "2.2.6",
+      "opencv-python-headless": "4.11.0.86"
+    }
+  },
+  "extra": {
+    "stage": "IA (VGGT), sin apoyo",
+    "status": "ok",
+    "source_run": "results/audifonos/vggt",
+    "source_commit": "a244b86",
+    "n_images_used": 60,
+    "peak_gpu_gb": 13.15,
+    "inference_s": 90.42,
+    "remeasure_s": 3.6,
+    "support": {
+      "band_ratio": 0.06,
+      "contact_ratio": 0.08,
+      "cell_ratio": 0.02,
+      "normal": [
+        -0.015934576907265185,
+        0.007303906450635056,
+        0.9998463593019414
+      ],
+      "tilt_deg": 1.0,
+      "band": 3.600000010299682,
+      "input": 1928428,
+      "kept_above": 148108,
+      "kept_base": 42449,
+      "removed": 1737871
+    },
+    "n_object_points": 189239,
+    "scale_by": "ancho",
+    "bounding_box_mm": [
+      26.23,
+      60.0,
+      36.51
+    ],
+    "measurements": [
+      {
+        "name": "ancho",
+        "real_mm": 60,
+        "model_mm": 60.0,
+        "error_mm": 0.0,
+        "error_pct": 0.0,
+        "role": "escala"
+      },
+      {
+        "name": "alto",
+        "real_mm": 43,
+        "model_mm": 36.51,
+        "error_mm": -6.49,
+        "error_pct": -15.08,
+        "role": "evaluación"
+      },
+      {
+        "name": "fondo",
+        "real_mm": 20,
+        "model_mm": 26.23,
+        "error_mm": 6.23,
+        "error_pct": 31.14,
+        "role": "evaluación"
+      }
+    ],
+    "mean_abs_error_pct": 23.11,
+    "angular_coverage_pct": 100.0,
+    "original_mean_abs_error_pct": 30.78,
+    "mesh": {
+      "source": "object_mm.ply",
+      "voxel_mm": 0.24,
+      "n_points_meshed": 166906,
+      "normal_neighbors": 20,
+      "poisson_options": {
+        "depth": 10,
+        "trim": 7
+      },
+      "crop_margin": 0.03,
+      "n_faces_poisson": 686733,
+      "simplification": {
+        "method": "QEM (pycolmap.simplify_mesh)",
+        "target_faces": 200000
+      },
+      "n_vertices": 102400,
+      "n_faces": 200000,
+      "poisson_s": 11.2,
+      "total_s": 24.8,
+      "measurements": [
+        {
+          "name": "ancho",
+          "real_mm": 60,
+          "mesh_mm": 57.52,
+          "error_pct": -4.13,
+          "role": "escala"
+        },
+        {
+          "name": "alto",
+          "real_mm": 43,
+          "mesh_mm": 36.19,
+          "error_pct": -15.84,
+          "role": "evaluación"
+        },
+        {
+          "name": "fondo",
+          "real_mm": 20,
+          "mesh_mm": 24.08,
+          "error_pct": 20.42,
+          "role": "evaluación"
+        }
+      ],
+      "mean_abs_error_pct": 18.13,
+      "files": [
+        "mesh_mm.ply",
+        "mesh_mm.obj",
+        "mesh.glb"
+      ]
+    }
+  }
+}

@@ -16,9 +16,12 @@ MEASUREMENTS = {
         {"name": "fondo", "mm": 58, "kind": "extent", "rank": 2},
     ],
     "canasto-flores": [
-        # El canasto ocupa el 42 % inferior del alto total (85 / 202 mm); la
-        # franja 5-35 % evita la base y el arranque de las flores.
-        {"name": "diametro_canasto", "mm": 150, "kind": "slice_width", "from": 0.05, "to": 0.35},
+        # El canasto ocupa el 42 % inferior del alto total (85 / 202 mm), pero
+        # las flores cuelgan por los lados hasta un 25 % de la altura. En la
+        # nube de VGGT sin apoyo, el diámetro es estable entre 5-15 % y 5-20 %
+        # (126 mm) y salta a 150 mm con la franja 5-35 % usada antes, que
+        # incluía flores. Por eso se mide entre el 5 y el 20 %.
+        {"name": "diametro_canasto", "mm": 150, "kind": "slice_width", "from": 0.05, "to": 0.20},
         {"name": "alto_total", "mm": 202, "kind": "height"},
         {"name": "ancho_flores", "mm": 240, "kind": "max_width"},
     ],

@@ -294,6 +294,100 @@ def clean_object_cloud(points: np.ndarray, centers: np.ndarray, directions: np.n
     return mask, report
 
 
+def _support_plane(points: np.ndarray, up: np.ndarray, threshold: float, *, max_tilt_deg: float,
+                   iterations: int, rng: np.random.Generator) -> tuple[np.ndarray, float]:
+    """RANSAC limitado a planos casi horizontales; devuelve (normal hacia `up`, d)."""
+    best, best_count = None, -1
+    cos_max = np.cos(np.radians(max_tilt_deg))
+    for _ in range(iterations):
+        a, b, c = points[rng.choice(len(points), 3, replace=False)]
+        normal = np.cross(b - a, c - a)
+        norm = np.linalg.norm(normal)
+        if norm < 1e-12:
+            continue
+        normal /= norm
+        if normal @ up < 0:
+            normal = -normal
+        if normal @ up < cos_max:  # plano demasiado inclinado: no es el apoyo
+            continue
+        count = int((np.abs((points - a) @ normal) < threshold).sum())
+        if count > best_count:
+            best, best_count = (normal, -float(normal @ a)), count
+    if best is None:
+        raise ValueError("No se encontró ningún plano casi horizontal")
+    # Ajuste final por mínimos cuadrados (SVD) con los inliers del mejor plano.
+    normal, d = best
+    inliers = points[np.abs(points @ normal + d) < threshold]
+    centroid = inliers.mean(axis=0)
+    # El vector propio de menor valor propio de la covarianza es la normal.
+    normal = np.linalg.eigh(np.cov((inliers - centroid).T))[1][:, 0]
+    if normal @ up < 0:
+        normal = -normal
+    return normal, -float(normal @ centroid)
+
+
+def remove_support(coords: np.ndarray, *, up: np.ndarray = (0.0, 0.0, 1.0),
+                   band_ratio: float = 0.06, contact_ratio: float = 0.12,
+                   cell_ratio: float = 0.02, max_tilt_deg: float = 30.0,
+                   iterations: int = 300, sample: int = 100_000,
+                   seed: int = 0) -> tuple[np.ndarray, dict]:
+    """Elimina la superficie de apoyo (mesa, banquito) que queda bajo el objeto.
+
+    `clean_object_cloud` busca la mesa como el plano dominante de la escena,
+    pero cuando el apoyo es un disco de tela solo un poco mayor que el objeto
+    puede no detectarlo. Esta función trabaja sobre la nube ya recortada:
+
+    1. Busca con RANSAC el plano casi horizontal (< `max_tilt_deg` respecto a
+       `up`) con más puntos: el centro del disco de apoyo.
+    2. La tela no es plana: forma una capa de cierto grosor. Se elimina todo lo
+       que queda por debajo de la parte alta de esa capa (`band_ratio`).
+    3. Excepción, para no recortar la base del objeto: en las celdas de una
+       rejilla horizontal donde el objeto toca el apoyo (celdas con puntos justo
+       por encima de la capa, hasta `contact_ratio`), se conservan los puntos de
+       la mitad superior de la capa. La base queda así a la altura del centro del
+       disco. Las celdas bajo partes del objeto que no tocan el apoyo (un asa,
+       un mango) no cuentan como contacto.
+
+    Las distancias son fracciones de la mayor dimensión horizontal de la nube,
+    para que funcione igual sea cual sea su escala.
+
+    Returns:
+        (máscara de puntos que se conservan, informe con el plano y los conteos)
+    """
+    coords = np.asarray(coords, dtype=float)
+    up = np.asarray(up, dtype=float) / np.linalg.norm(up)
+    rng = np.random.default_rng(seed)
+    a, b = _perpendicular_basis(up)
+    size = float(max(_extent(coords @ a, 1.0), _extent(coords @ b, 1.0)))
+    band = band_ratio * size
+
+    subset = coords[rng.choice(len(coords), min(sample, len(coords)), replace=False)]
+    normal, d = _support_plane(subset, up, band / 3, max_tilt_deg=max_tilt_deg,
+                               iterations=iterations, rng=rng)
+    height = coords @ normal + d
+
+    # Celdas de contacto: puntos justo por encima de la capa de tela.
+    pa, pb = _perpendicular_basis(normal)
+    cells = np.floor(np.stack([coords @ pa, coords @ pb], axis=1) / (cell_ratio * size)).astype(np.int64)
+    keys = cells[:, 0] * 1_000_003 + cells[:, 1]
+    contact = (height > band) & (height <= contact_ratio * size)
+    in_contact_cell = np.isin(keys, np.unique(keys[contact]))
+
+    above = height > band
+    base = in_contact_cell & (height >= 0) & ~above
+    keep = above | base
+    report = {
+        "normal": normal.tolist(),
+        "tilt_deg": round(float(np.degrees(np.arccos(np.clip(normal @ up, -1, 1)))), 2),
+        "band": band,
+        "input": len(coords),
+        "kept_above": int(above.sum()),
+        "kept_base": int(base.sum()),
+        "removed": int((~keep).sum()),
+    }
+    return keep, report
+
+
 # ---------------------------------------------------------------------------
 # Marco del objeto y medidas
 # ---------------------------------------------------------------------------

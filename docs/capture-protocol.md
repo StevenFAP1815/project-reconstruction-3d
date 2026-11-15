@@ -185,8 +185,8 @@ separado: diámetro externo del aro (91 mm) y profundidad máxima de la malla
 
 ## 6. Estrategia de mitigación para O3 (vaso de vidrio)
 
-La rúbrica pide documentar al menos una estrategia de mitigación para la
-superficie difícil, o justificar por qué no se aplicó.
+El vidrio es transparente y refleja la luz, por lo que es la superficie más
+difícil del conjunto. Esta sección recoge qué se hizo para mitigarlo y qué no.
 
 | Campo | Valor |
 |---|---|

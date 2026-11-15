@@ -1,0 +1,4 @@
+name,real_mm,model_mm,error_mm,error_pct,role
+largo_total,206,206.0,0.0,0.0,escala
+diametro_aro,91,197.04,106.04,116.53,evaluación
+profundidad_malla,45,39.07,-5.93,-13.17,evaluación

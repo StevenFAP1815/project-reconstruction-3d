@@ -1,0 +1,4 @@
+name,real_mm,model_mm,error_mm,error_pct,role
+ancho,60,60.0,0.0,0.0,escala
+alto,43,58.56,15.56,36.2,evaluación
+fondo,20,14.93,-5.07,-25.35,evaluación

@@ -1,0 +1,132 @@
+{
+  "object": "caja-carton-leche",
+  "method": "vggt-nosupport",
+  "created_at": "2026-11-15T03:16:17+00:00",
+  "n_images": 73,
+  "n_registered": 60,
+  "registered_ratio": 0.8219,
+  "runtime_s": 492.68,
+  "seed": 42,
+  "scale_factor": 262.0946301632493,
+  "environment": {
+    "python": "3.13.2",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "gpu": null,
+    "code_version": "466f129",
+    "packages": {
+      "numpy": "2.2.6",
+      "opencv-python-headless": "4.11.0.86"
+    }
+  },
+  "extra": {
+    "stage": "IA (VGGT), sin apoyo",
+    "status": "ok",
+    "source_run": "results/caja-carton-leche/vggt",
+    "source_commit": "a244b86",
+    "n_images_used": 60,
+    "peak_gpu_gb": 12.57,
+    "inference_s": 83.93,
+    "remeasure_s": 6.2,
+    "support": {
+      "band_ratio": 0.06,
+      "contact_ratio": 0.08,
+      "cell_ratio": 0.02,
+      "normal": [
+        0.07951540887220046,
+        -0.19339755049914198,
+        0.9778929835175313
+      ],
+      "tilt_deg": 12.07,
+      "band": 11.221571997070322,
+      "input": 1532215,
+      "kept_above": 1057104,
+      "kept_base": 62364,
+      "removed": 412747
+    },
+    "n_object_points": 1105479,
+    "scale_by": "alto",
+    "bounding_box_mm": [
+      64.39,
+      95.58,
+      196.0
+    ],
+    "measurements": [
+      {
+        "name": "alto",
+        "real_mm": 196,
+        "model_mm": 196.0,
+        "error_mm": 0.0,
+        "error_pct": 0.0,
+        "role": "escala"
+      },
+      {
+        "name": "ancho",
+        "real_mm": 93,
+        "model_mm": 95.58,
+        "error_mm": 2.58,
+        "error_pct": 2.77,
+        "role": "evaluación"
+      },
+      {
+        "name": "fondo",
+        "real_mm": 58,
+        "model_mm": 64.39,
+        "error_mm": 6.39,
+        "error_pct": 11.01,
+        "role": "evaluación"
+      }
+    ],
+    "mean_abs_error_pct": 6.89,
+    "angular_coverage_pct": 100.0,
+    "original_mean_abs_error_pct": 142.94,
+    "mesh": {
+      "source": "object_mm.ply",
+      "voxel_mm": 0.784,
+      "n_points_meshed": 436665,
+      "normal_neighbors": 20,
+      "poisson_options": {
+        "depth": 10,
+        "trim": 7
+      },
+      "crop_margin": 0.03,
+      "n_faces_poisson": 1866337,
+      "simplification": {
+        "method": "QEM (pycolmap.simplify_mesh)",
+        "target_faces": 200000
+      },
+      "n_vertices": 95430,
+      "n_faces": 200000,
+      "poisson_s": 28.8,
+      "total_s": 67.2,
+      "measurements": [
+        {
+          "name": "alto",
+          "real_mm": 196,
+          "mesh_mm": 197.61,
+          "error_pct": 0.82,
+          "role": "escala"
+        },
+        {
+          "name": "ancho",
+          "real_mm": 93,
+          "mesh_mm": 94.27,
+          "error_pct": 1.37,
+          "role": "evaluación"
+        },
+        {
+          "name": "fondo",
+          "real_mm": 58,
+          "mesh_mm": 63.55,
+          "error_pct": 9.57,
+          "role": "evaluación"
+        }
+      ],
+      "mean_abs_error_pct": 5.47,
+      "files": [
+        "mesh_mm.ply",
+        "mesh_mm.obj",
+        "mesh.glb"
+      ]
+    }
+  }
+}
