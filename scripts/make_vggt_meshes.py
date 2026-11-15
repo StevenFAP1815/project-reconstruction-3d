@@ -56,6 +56,16 @@ CROP_MARGIN = 0.03           # margen del recorte, como en 03
 TARGET_FACES = 200_000
 
 
+def export_glb(path, vertices_mm, faces, colors):
+    """glTF mide en metros y usa +Y como vertical; las mallas usan mm y +Z.
+
+    (x, y, z) -> (x, z, -y) es un giro de -90° alrededor del eje X (no un
+    reflejo), así que conserva el sentido de los triángulos.
+    """
+    vertices_m = np.column_stack([vertices_mm[:, 0], vertices_mm[:, 2], -vertices_mm[:, 1]]) / 1000.0
+    write_glb(path, vertices_m, faces, colors)
+
+
 def render(ax, vertices, faces, colors, elev, azim):
     """Dibuja la malla con el color de sus vértices, sombreado según la orientación."""
     triangles = vertices[faces]
@@ -106,7 +116,7 @@ def process(obj: str) -> dict:
 
     write_ply(run_dir / "mesh_mm.ply", vertices, colors=vertex_colors, faces=faces)
     write_obj(run_dir / "mesh_mm.obj", vertices, faces, vertex_colors)
-    write_glb(run_dir / "mesh.glb", vertices / 1000.0, faces, vertex_colors)  # glTF mide en metros
+    export_glb(run_dir / "mesh.glb", vertices, faces, vertex_colors)
 
     # Medidas de la malla con la escala de la nube (no se vuelve a escalar).
     surface = sample_surface(vertices, faces, 200_000, seed=SEED)
@@ -152,6 +162,14 @@ def process(obj: str) -> dict:
 
 
 def main() -> None:
+    if "--glb-only" in sys.argv:   # vuelve a exportar los .glb desde mesh_mm.ply, sin Poisson
+        for obj in OBJECTS:
+            mesh_path = REPO_ROOT / "results" / obj / METHOD / "mesh_mm.ply"
+            if mesh_path.exists():
+                mesh = read_ply(mesh_path)
+                export_glb(mesh_path.with_name("mesh.glb"), mesh["points"], mesh["faces"], mesh["colors"])
+                print(f"{obj}: mesh.glb exportado")
+        return
     for obj in OBJECTS:
         if not (REPO_ROOT / "results" / obj / METHOD / "object_mm.ply").exists():
             print(f"{obj}: falta {METHOD}/object_mm.ply (ejecutar antes remeasure_vggt.py)")

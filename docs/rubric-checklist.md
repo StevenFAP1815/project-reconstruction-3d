@@ -30,8 +30,8 @@ Estados: `pendiente` · `en curso` · `listo`.
 | 7 | Comparación con IA | 10 | Mismo objeto y mismas imágenes; explicar el principio del método; comparar precisión, completitud, tiempo y memoria | listo (5 objetos, medidas corregidas sin la superficie de apoyo, `docs/vggt-results.md`) |
 | 8 | Evaluación y discusión | 14 | Tabla maestra objeto × método; error dimensional (≤ 2 %); figuras de los 5 modelos; análisis de fallos con causas verificadas | en curso (tabla maestra automática en `docs/master-table.md`; análisis de SfM y VGGT en `docs/sfm-results.md` y `docs/vggt-results.md`; ningún error medio ≤ 2 %) |
 | 9 | Reproducibilidad, ética y viabilidad | 6 | Notebook de inicio a fin; versiones fijadas; semillas; `results/` y `meta.json` por corrida; costo computacional; licencias; ética | en curso (`docs/reproducibility-ethics.md`, con los costos de MVS y VGGT) |
-| 10 | Conclusiones | 4 | Responder a cada objetivo; qué método conviene para cada tipo de objeto | pendiente |
-| 11 | Exposición y demostración | 8 | Demostración en vivo de los 5 modelos en un visor 3D | pendiente |
+| 10 | Conclusiones | 4 | Responder a cada objetivo; qué método conviene para cada tipo de objeto | listo (`docs/conclusions.md`) |
+| 11 | Exposición y demostración | 8 | Demostración en vivo de los 5 modelos en un visor 3D | en curso (visor listo en `viewer/`; falta ensayar la exposición) |
 
 ## Condiciones para todos los objetos
 

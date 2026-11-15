@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visor 3D de los cinco objetos</title>
+<!-- model-viewer (Google): carga un .glb y permite girar y hacer zoom con el ratón. -->
+<script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
+<style>
+  :root { --bg: #f6f6f4; --panel: #ffffff; --text: #1d1d1b; --muted: #6b6b66; --accent: #2f5d8a; --line: #e2e2dd; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #161615; --panel: #20201e; --text: #ecece8; --muted: #a3a39c; --accent: #8db7e0; --line: #34342f; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); }
+  header { padding: 16px 24px 8px; }
+  h1 { margin: 0; font-size: 1.3rem; }
+  header p { margin: 4px 0 0; color: var(--muted); font-size: .9rem; }
+  nav { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 24px; }
+  nav button { border: 1px solid var(--line); background: var(--panel); color: var(--text);
+               padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: .95rem; }
+  nav button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  main { display: grid; grid-template-columns: 1fr 320px; gap: 16px; padding: 8px 24px 24px; }
+  model-viewer { width: 100%; height: 72vh; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+  aside { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+  aside h2 { margin: 0 0 4px; font-size: 1.1rem; }
+  aside .material { color: var(--muted); margin: 0 0 12px; font-size: .9rem; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  td { padding: 6px 0; border-bottom: 1px solid var(--line); }
+  td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+  aside .note { margin-top: 12px; font-size: .85rem; color: var(--muted); line-height: 1.4; }
+  @media (max-width: 800px) { main { grid-template-columns: 1fr; padding: 8px 16px 16px; } nav, header { padding-left: 16px; padding-right: 16px; } model-viewer { height: 55vh; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Reconstrucción 3D de cinco objetos</h1>
+  <p>Mallas de Poisson a partir de VGGT, escaladas en milímetros. Arrastra para girar, rueda para acercar.</p>
+</header>
+<nav id="tabs"></nav>
+<main>
+  <model-viewer id="viewer" camera-controls auto-rotate shadow-intensity="0.6" exposure="1.1"
+                interaction-prompt="none" alt="Malla 3D del objeto seleccionado"></model-viewer>
+  <aside id="info"></aside>
+</main>
+<script>
+// Valores de results/<objeto>/vggt-nosupport/meta.json y docs/sfm-results.md.
+const OBJECTS = [
+  { id: "caja-carton-leche", name: "Caja de cartón", material: "Opaco, con textura impresa",
+    sfm: "100 % (D_calibrada) · 63 % (base)", mesh: "5,5 %", best: "ancho 1,4 %", note: "El caso favorable para ambos métodos." },
+  { id: "canasto-flores", name: "Canasto con flores", material: "Mimbre repetitivo y flores finas",
+    sfm: "46 %, 3 modelos", mesh: "6,7 %", best: "alto total −6,0 %", note: "La malla une flores y canasto; la nube mide mejor (4,5 %)." },
+  { id: "vaso-vidrio", name: "Vaso de vidrio", material: "Transparente, refracta el fondo",
+    sfm: "5 %, 41 puntos", mesh: "4,5 %", best: "boca 1,5 %", note: "SfM no lo reconstruye; VGGT recupera cuerpo y asa." },
+  { id: "audifonos", name: "Audífonos", material: "Plástico brillante, objeto pequeño (60 mm)",
+    sfm: "48 %, 3 modelos", mesh: "18,1 %", best: "ancho (escala)", note: "El peor resultado: pocos píxeles por milímetro a 518 px." },
+  { id: "colador-cocina", name: "Colador de cocina", material: "Metal calado y especular",
+    sfm: "9 %, 8 fotos", mesh: "5,8 %", best: "aro 2,1 %", note: "Queda un borde del apoyo en la base." },
+];
+
+const tabs = document.getElementById("tabs");
+const viewer = document.getElementById("viewer");
+const info = document.getElementById("info");
+
+function show(obj) {
+  viewer.src = `../results/${obj.id}/vggt-nosupport/mesh.glb`;
+  info.innerHTML = `
+    <h2>${obj.name}</h2>
+    <p class="material">${obj.material}</p>
+    <table>
+      <tr><td>Fotos registradas por SfM</td><td>${obj.sfm}</td></tr>
+      <tr><td>Fotos usadas por VGGT</td><td>60</td></tr>
+      <tr><td>Error medio de la malla</td><td>${obj.mesh}</td></tr>
+      <tr><td>Mejor medida</td><td>${obj.best}</td></tr>
+      <tr><td>Cobertura angular</td><td>100 %</td></tr>
+    </table>
+    <p class="note">${obj.note}</p>`;
+  for (const b of tabs.children) b.setAttribute("aria-pressed", b.dataset.id === obj.id);
+}
+
+for (const obj of OBJECTS) {
+  const b = document.createElement("button");
+  b.textContent = obj.name;
+  b.dataset.id = obj.id;
+  b.onclick = () => show(obj);
+  tabs.appendChild(b);
+}
+show(OBJECTS[0]);
+</script>
+</body>
+</html>
