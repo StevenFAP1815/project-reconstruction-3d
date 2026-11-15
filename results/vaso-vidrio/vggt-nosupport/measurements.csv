@@ -1,0 +1,4 @@
+name,real_mm,model_mm,error_mm,error_pct,role
+alto,143,143.0,0.0,0.0,escala
+diametro_boca,79,81.11,2.11,2.67,evaluación
+diametro_base,72,86.84,14.84,20.61,evaluación

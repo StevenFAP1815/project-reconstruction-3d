@@ -55,6 +55,18 @@ lleva decenas de minutos. Después, la verificación geométrica entre vistas
   cambio de perder detalle fino. No se probó.
 - **Usar una GPU más rápida** (L4 o A100, de pago).
 
+## Qué se hizo en su lugar
+
+En vez de dedicar el tiempo de GPU a MVS, se completó y corrigió la otra vía
+densa del proyecto, la de VGGT:
+
+- Las nubes densas de VGGT de los cinco objetos se limpiaron de la superficie de
+  apoyo y se volvieron a medir en local, sin GPU (`docs/vggt-results.md`). El
+  error medio bajó de 21–143 % a 4,5–23 %.
+- La comparación entre métodos se apoya en lo que sí se midió en ambos: fotos
+  registradas, cobertura, coherencia de la focal con la calibración, tiempo y
+  memoria (`docs/master-table.md`).
+
 ## Qué se mantiene
 
 - El código de `03` queda en el repositorio como parte del método: cualquiera

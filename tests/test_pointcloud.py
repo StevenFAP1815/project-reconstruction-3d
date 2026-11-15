@@ -17,6 +17,7 @@ from recon3d.pointcloud import (
     measure,
     object_frame,
     read_ply,
+    remove_support,
     write_glb,
     write_obj,
     write_ply,
@@ -96,6 +97,43 @@ def test_clean_object_cloud_removes_table_and_background():
     # Se pierden la base de la caja (1/6 de sus puntos), que toca la mesa, y una
     # franja de los laterales igual a la tolerancia del plano.
     assert mask[:4000].mean() > 0.75
+
+
+def support_scene(seed=8):
+    """Caja de 40 × 30 × 100 sobre un disco de tela de 200 de diámetro y 8 de grosor,
+    con un "mango" horizontal a 30 de altura que sobresale de la caja."""
+    rng = np.random.default_rng(seed)
+    box = box_surface((40.0, 30.0, 100.0), n=8000, seed=seed)
+    radius = 100 * np.sqrt(rng.uniform(0, 1, 12000))
+    angle = rng.uniform(0, 2 * np.pi, 12000)
+    disk = np.column_stack([radius * np.cos(angle), radius * np.sin(angle), rng.uniform(-4, 4, 12000)])
+    handle = np.column_stack([rng.uniform(20, 80, 1000), rng.uniform(-3, 3, 1000), rng.uniform(28, 32, 1000)])
+    return box, disk, handle
+
+
+def test_remove_support_drops_disk_and_keeps_object():
+    box, disk, handle = support_scene()
+    points = np.vstack([box, disk, handle])
+    keep, report = remove_support(points, seed=0)
+    assert report["tilt_deg"] < 2
+    assert keep[len(box) + len(disk):].all()          # el mango no es apoyo
+    # Del disco solo puede quedar lo que está justo bajo la base de la caja.
+    disk_kept = disk[keep[len(box):len(box) + len(disk)]]
+    assert len(disk_kept) < 0.03 * len(disk)
+    assert np.all(np.abs(disk_kept[:, :2]) < [20 + 5, 15 + 5])
+    # La base de la caja se conserva: el alto medido sigue siendo ~100.
+    kept_box = box[keep[:len(box)]]
+    assert kept_box[:, 2].max() - kept_box[:, 2].min() == pytest.approx(100, abs=1)
+
+
+def test_remove_support_follows_a_tilted_support():
+    box, disk, handle = support_scene()
+    tilt = np.radians(12)
+    rotation = np.array([[1, 0, 0], [0, np.cos(tilt), -np.sin(tilt)], [0, np.sin(tilt), np.cos(tilt)]])
+    points = np.vstack([box, disk, handle]) @ rotation.T
+    keep, report = remove_support(points, seed=0)
+    assert report["tilt_deg"] == pytest.approx(12, abs=1)
+    assert keep[len(box):len(box) + len(disk)].mean() < 0.03
 
 
 def test_object_frame_and_measurements_on_box():

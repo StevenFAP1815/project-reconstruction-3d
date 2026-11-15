@@ -1,0 +1,83 @@
+{
+  "object": "vaso-vidrio",
+  "method": "vggt-nosupport",
+  "created_at": "2026-11-15T03:16:29+00:00",
+  "n_images": 81,
+  "n_registered": 60,
+  "registered_ratio": 0.7407,
+  "runtime_s": 272.18,
+  "seed": 42,
+  "scale_factor": 487.0023333932167,
+  "environment": {
+    "python": "3.13.2",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "gpu": null,
+    "code_version": "466f129",
+    "packages": {
+      "numpy": "2.2.6",
+      "opencv-python-headless": "4.11.0.86"
+    }
+  },
+  "extra": {
+    "stage": "IA (VGGT), sin apoyo",
+    "status": "ok",
+    "source_run": "results/vaso-vidrio/vggt",
+    "source_commit": "a244b86",
+    "n_images_used": 60,
+    "peak_gpu_gb": 13.15,
+    "inference_s": 93.47,
+    "remeasure_s": 3.6,
+    "support": {
+      "band_ratio": 0.06,
+      "contact_ratio": 0.08,
+      "cell_ratio": 0.02,
+      "normal": [
+        -0.004652547034270634,
+        -0.0006411873567129106,
+        0.9999889712816175
+      ],
+      "tilt_deg": 0.27,
+      "band": 16.71671149291992,
+      "input": 674215,
+      "kept_above": 347037,
+      "kept_base": 67777,
+      "removed": 259401
+    },
+    "n_object_points": 408902,
+    "scale_by": "alto",
+    "bounding_box_mm": [
+      109.51,
+      77.62,
+      143.0
+    ],
+    "measurements": [
+      {
+        "name": "alto",
+        "real_mm": 143,
+        "model_mm": 143.0,
+        "error_mm": 0.0,
+        "error_pct": 0.0,
+        "role": "escala"
+      },
+      {
+        "name": "diametro_boca",
+        "real_mm": 79,
+        "model_mm": 81.11,
+        "error_mm": 2.11,
+        "error_pct": 2.67,
+        "role": "evaluación"
+      },
+      {
+        "name": "diametro_base",
+        "real_mm": 72,
+        "model_mm": 86.84,
+        "error_mm": 14.84,
+        "error_pct": 20.61,
+        "role": "evaluación"
+      }
+    ],
+    "mean_abs_error_pct": 11.64,
+    "angular_coverage_pct": 100.0,
+    "original_mean_abs_error_pct": 133.5
+  }
+}

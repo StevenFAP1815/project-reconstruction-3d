@@ -1,7 +1,17 @@
 object,method,stage,status,n_images,n_used,n_registered,registered_pct,n_models,n_points,reprojection_error_px,scale_factor,mean_abs_error_pct,coverage_pct,runtime_s,peak_gpu_gb,gpu,code_version
 caja-carton-leche,colmap,SfM disperso (base),ok,73,68,43,63.24,2,5857,1.1103,,,,554.42,,Tesla T4,9f5d708
 caja-carton-leche,colmap-v2,SfM disperso (D_calibrada),ok,73,68,68,100,1,19279,1.116,,,,567.8,,Tesla T4,cb0849f
+caja-carton-leche,vggt,IA (VGGT),ok,73,60,60,100.0,,1532215,,251.26848476313756,142.94,100.0,492.68,12.57,Tesla T4,a244b86
+caja-carton-leche,vggt-nosupport,"IA (VGGT), sin apoyo",ok,73,60,60,100.0,,1105479,,262.0946301632493,6.89,100.0,492.68,12.57,,466f129
 canasto-flores,colmap,SfM disperso (base),ok,93,87,40,45.98,3,3284,1.2194,,,,756.26,,Tesla T4,4af6802
+canasto-flores,vggt,IA (VGGT),ok,93,60,60,100.0,,1866615,,270.02534884668444,21.29,100.0,711.53,13.15,Tesla T4,a244b86
+canasto-flores,vggt-nosupport,"IA (VGGT), sin apoyo",ok,93,60,60,100.0,,1437508,,360.5106847653925,4.49,100.0,711.53,13.15,,466f129
 vaso-vidrio,colmap,SfM disperso (base),ok,81,80,4,5,1,41,1.3635,,,,199.61,,Tesla T4,4af6802
+vaso-vidrio,vggt,IA (VGGT),ok,81,60,60,100.0,,674215,,479.74986032559787,133.5,100.0,272.18,13.15,Tesla T4,a244b86
+vaso-vidrio,vggt-nosupport,"IA (VGGT), sin apoyo",ok,81,60,60,100.0,,408902,,487.0023333932167,11.64,100.0,272.18,13.15,,466f129
 audifonos,colmap,SfM disperso (base),ok,121,99,48,48.48,3,57820,0.8274,,,,1325.76,,Tesla T4,4af6802
+audifonos,vggt,IA (VGGT),ok,121,60,60,100.0,,1928428,,59.089330488032886,30.78,100.0,277.91,13.15,Tesla T4,a244b86
+audifonos,vggt-nosupport,"IA (VGGT), sin apoyo",ok,121,60,60,100.0,,189239,,146.44136976818515,23.11,100.0,277.91,13.15,,466f129
 colador-cocina,colmap,SfM disperso (base),ok,86,86,8,9.3,1,190,1.142,,,,417.18,,Tesla T4,4af6802
+colador-cocina,vggt,IA (VGGT),ok,86,60,60,100.0,,1488793,,292.44194066067973,64.85,100.0,287.62,13.15,Tesla T4,a244b86
+colador-cocina,vggt-nosupport,"IA (VGGT), sin apoyo",ok,86,60,60,100.0,,305056,,461.7814450007145,6.72,100.0,287.62,13.15,,466f129

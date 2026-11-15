@@ -76,6 +76,7 @@ Todas las corridas se ejecutaron en Google Colab con una GPU NVIDIA Tesla T4
 | VGGT (60 fotos) | Audífonos | 60 | 4,6 min (90 s de inferencia) |
 | VGGT (60 fotos) | Colador | 60 | 4,8 min (92 s de inferencia) |
 | VGGT (60 fotos) | Vaso | 60 | 4,5 min (93 s de inferencia) |
+| Nueva medición de VGGT sin apoyo (`scripts/remeasure_vggt.py`) | Cada objeto | — | 5–8 s (CPU local) |
 
 - El tiempo de SfM crece con el número de fotos, porque el emparejamiento
   exhaustivo compara todos los pares: con n fotos hay n(n − 1)/2 pares (2278
