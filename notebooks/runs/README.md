@@ -11,5 +11,13 @@ original y se reemplaza la copia.
 | `02_sfm_audifonos.ipynb` | `02_sfm_colmap.ipynb` | `4af6802` | `A_base` |
 | `02_sfm_colador-cocina.ipynb` | `02_sfm_colmap.ipynb` | `4af6802` | `A_base` |
 | `02_sfm_vaso-vidrio.ipynb` | `02_sfm_colmap.ipynb` | `4af6802` | `A_base` |
+| `04_ai_vggt_caja-carton-leche.ipynb` | `04_ai_vggt.ipynb` | `a244b86` | 60 fotos, float16 |
+| `04_ai_vggt_canasto-flores.ipynb` | `04_ai_vggt.ipynb` | `a244b86` | 60 fotos, float16 |
+| `04_ai_vggt_audifonos.ipynb` | `04_ai_vggt.ipynb` | `a244b86` | 60 fotos, float16 |
+| `04_ai_vggt_colador-cocina.ipynb` | `04_ai_vggt.ipynb` | `a244b86` | 60 fotos, float16 |
+| `04_ai_vggt_vaso-vidrio.ipynb` | `04_ai_vggt.ipynb` | `a244b86` | 60 fotos, float16 |
 
-El análisis de los resultados está en `docs/sfm-results.md`.
+No hay copias de `03`: la etapa densa no se ejecutó (`docs/dense-reconstruction.md`).
+
+El análisis de los resultados está en `docs/sfm-results.md` (SfM) y
+`docs/vggt-results.md` (VGGT).

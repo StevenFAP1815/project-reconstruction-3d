@@ -70,8 +70,12 @@ Todas las corridas se ejecutaron en Google Colab con una GPU NVIDIA Tesla T4
 | SfM base | Audífonos | 121 | 22,1 min |
 | SfM base | Colador | 86 | 7,0 min |
 | SfM base | Vaso | 81 | 3,3 min |
-| MVS + malla | (pendiente) | | |
-| VGGT | (pendiente) | | |
+| MVS + malla (`03`) | Caja | 68 | > 40 min sin concluir; no se ejecutó en el resto (`docs/dense-reconstruction.md`) |
+| VGGT (60 fotos) | Caja | 60 | 8,2 min (3,5 min de descarga del modelo; 84 s de inferencia) |
+| VGGT (60 fotos) | Canasto | 60 | 11,9 min (90 s de inferencia) |
+| VGGT (60 fotos) | Audífonos | 60 | 4,6 min (90 s de inferencia) |
+| VGGT (60 fotos) | Colador | 60 | 4,8 min (92 s de inferencia) |
+| VGGT (60 fotos) | Vaso | 60 | 4,5 min (93 s de inferencia) |
 
 - El tiempo de SfM crece con el número de fotos, porque el emparejamiento
   exhaustivo compara todos los pares: con n fotos hay n(n − 1)/2 pares (2278
@@ -79,7 +83,11 @@ Todas las corridas se ejecutaron en Google Colab con una GPU NVIDIA Tesla T4
 - Los objetos que SfM no reconstruye (colador y vaso) tardan menos: el mapeo se
   detiene pronto al no encontrar fotos que registrar.
 - La memoria máxima de GPU se mide en VGGT (`peak_gpu_gb` en su `meta.json`),
-  porque es el factor que limita el número de fotos que acepta.
+  porque es el factor que limita el número de fotos que acepta: 12,6–13,2 GB de
+  los 16 GB de la T4 con 60 fotos.
+- La inferencia de VGGT tarda casi lo mismo en los cinco objetos (84–93 s),
+  porque depende del número de fotos y no del material. El resto del tiempo
+  total es la carga del modelo, el filtro de borrosas y la limpieza de la nube.
 
 ## 3. Licencias
 
@@ -116,10 +124,13 @@ Todas las corridas se ejecutaron en Google Colab con una GPU NVIDIA Tesla T4
 - **Captura.** Fotografiar un objeto llevó entre 3 y 25 minutos con un teléfono
   y luz ambiental (`docs/capture-protocol.md`), sin equipo adicional.
 - **Cómputo.** El procesamiento de un objeto con COLMAP tarda entre 3 y 22
-  minutos de GPU solo en SfM, más el tiempo de MVS. Con la cuota gratuita de
-  Colab, la GPU se agotó durante el proyecto y hubo que esperar a que se
-  renovara. Para un uso continuado (por ejemplo, un catálogo con muchos
-  productos) haría falta una GPU propia o de pago.
+  minutos de GPU solo en SfM, y la etapa densa de la caja no concluyó en más de
+  40 minutos, por lo que no se completó en ningún objeto
+  (`docs/dense-reconstruction.md`). VGGT obtuvo una nube densa de cada objeto
+  en menos de 12 minutos en total. Con la cuota gratuita de Colab, la GPU se
+  agotó durante el proyecto y hubo que esperar a que se renovara. Para un uso
+  continuado (por ejemplo, un catálogo con muchos productos) haría falta una GPU
+  propia o de pago.
 - **Calidad según el objeto.** El método clásico es viable para objetos opacos
   y con textura (caja). Para objetos transparentes, metálicos o con patrones
   repetitivos no es viable sin cambiar la captura (por ejemplo, un recubrimiento

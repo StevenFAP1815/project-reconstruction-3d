@@ -26,10 +26,10 @@ Estados: `pendiente` · `en curso` · `listo`.
 | 3 | Calibración | 8 | Tablero o ChArUco con ≥ 15 vistas; K, distorsión, RMS ≤ 0,5 px; modelo pinhole; comparar con intrínsecos de SfM | listo (42 vistas, RMS 0,81 px justificado por moiré; comparación en `docs/sfm-results.md`) |
 | 4 | Preprocesamiento | 6 | Filtro de borrosas cuantitativo (varianza del Laplaciano); corrección de distorsión; máscaras; **medir el efecto** de cada paso | listo (`docs/preprocessing.md`: borrosas y CLAHE medidos; distorsión en `03`; máscaras no usadas, con justificación) |
 | 5 | SfM y geometría epipolar | 14 | SIFT, RANSAC, F/E, registro incremental, triangulación, BA; por objeto: % registradas (≥ 90 %), n.º de puntos, longitud media de track, error de reproyección (< 1 px); líneas epipolares en un par | listo (5 objetos; ≥ 90 % solo en la caja con `D_calibrada`; ver `docs/sfm-results.md`) |
-| 6 | Densa, malla y escala | 12 | MVS; limpieza de outliers; malla Poisson o ball pivoting; escala en mm; exportar .ply/.obj/.glb; justificar parámetros | en curso (`03_dense_mesh_scale.ipynb`) |
-| 7 | Comparación con IA | 10 | Mismo objeto y mismas imágenes; explicar el principio del método; comparar precisión, completitud, tiempo y memoria | en curso (`04_ai_vggt.ipynb`: error dimensional, cobertura angular, tiempo y memoria de GPU) |
+| 6 | Densa, malla y escala | 12 | MVS; limpieza de outliers; malla Poisson o ball pivoting; escala en mm; exportar .ply/.obj/.glb; justificar parámetros | en curso (`03` implementado pero no ejecutado: MVS de la caja > 40 min sin concluir, ver `docs/dense-reconstruction.md`; nube densa escalada de los 5 objetos con VGGT) |
+| 7 | Comparación con IA | 10 | Mismo objeto y mismas imágenes; explicar el principio del método; comparar precisión, completitud, tiempo y memoria | en curso (5 objetos ejecutados, `docs/vggt-results.md`; falta repetir la medición sin la superficie de apoyo) |
 | 8 | Evaluación y discusión | 14 | Tabla maestra objeto × método; error dimensional (≤ 2 %); figuras de los 5 modelos; análisis de fallos con causas verificadas | en curso (tabla maestra automática en `docs/master-table.md`; análisis de SfM en `docs/sfm-results.md`) |
-| 9 | Reproducibilidad, ética y viabilidad | 6 | Notebook de inicio a fin; versiones fijadas; semillas; `results/` y `meta.json` por corrida; costo computacional; licencias; ética | en curso (`docs/reproducibility-ethics.md`; faltan los costos de MVS y VGGT) |
+| 9 | Reproducibilidad, ética y viabilidad | 6 | Notebook de inicio a fin; versiones fijadas; semillas; `results/` y `meta.json` por corrida; costo computacional; licencias; ética | en curso (`docs/reproducibility-ethics.md`, con los costos de MVS y VGGT) |
 | 10 | Conclusiones | 4 | Responder a cada objetivo; qué método conviene para cada tipo de objeto | pendiente |
 | 11 | Exposición y demostración | 8 | Demostración en vivo de los 5 modelos en un visor 3D | pendiente |
 
@@ -51,10 +51,10 @@ forma proporcional.
 | Dataset propio (40-150) con referencia de escala | sí (73), escala por medida | sí (93), escala por medida | sí (81), escala por medida | sí (121), escala por medida | sí (86), escala por medida |
 | ≥ 3 medidas físicas registradas | sí | sí (4) | sí | sí | sí |
 | SfM: poses + nube dispersa (≥ 90 % registradas) | 100 % (`D`), 63 % (base) | 46 % | 5 % | 48 % | 9 % |
-| Nube densa limpia | | | | | |
-| Malla exportada y escalada (mm) | | | | | |
-| Reconstrucción con método de IA | | | | | |
-| Error dimensional (%) | | | | | |
+| Nube densa limpia | VGGT (MVS no ejecutado) | VGGT | VGGT | VGGT | VGGT |
+| Malla exportada y escalada (mm) | no | no | no | no | no |
+| Reconstrucción con método de IA | sí, 100 % de cobertura | sí, 100 % | sí, 100 % | sí, 100 % | sí, 100 % |
+| Error dimensional (%) | pendiente (apoyo sin eliminar) | pendiente | boca: 1,2 %; resto pendiente | pendiente | pendiente |
 | `results/` y `meta.json` completos | | | | | |
 
 ## Estructura mínima para posterior elaboración de informe

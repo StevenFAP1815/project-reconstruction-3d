@@ -13,11 +13,14 @@ del pipeline.
 | `04_ai_vggt.ipynb` | Método de IA (VGGT): cámaras, profundidad y nube 3D predichas por una red, con la misma limpieza, escala y error dimensional que `03`, más tiempo y memoria de GPU (criterio 7). Un objeto por ejecución (`OBJECT`). |
 | `runs/` | Copias ejecutadas por objeto (evidencia); ver `runs/README.md`. |
 
-## Qué SfM usa cada objeto en `03` y `04`
+## Qué SfM usa cada objeto en `03`
 
 Las ejecuciones guardadas en `runs/02_sfm_<objeto>.ipynb` se hicieron con la
 configuración base (`A_base`, commit `4af6802`). `03` elige la entrada con la
-variable `SPARSE_METHOD`.
+variable `SPARSE_METHOD`. `04` (VGGT) no usa SfM: predice sus propias cámaras.
+
+`03` no se llegó a ejecutar: la etapa densa de la caja no concluyó en más de
+40 minutos (`docs/dense-reconstruction.md`). La tabla indica la entrada prevista.
 
 | Objeto | Entrada | Motivo |
 |---|---|---|
